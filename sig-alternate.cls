@@ -1,0 +1,1 @@
+sig-alternate-v2.5_1205.cls
