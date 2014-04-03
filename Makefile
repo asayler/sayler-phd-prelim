@@ -1,19 +1,25 @@
 PROPOSAL=proposal
+REPORT=report
 
 LATEX=pdflatex
 BIBTEX=bibtex --min-crossrefs=1000
 
-TEX = $(wildcard *.tex)
 REF = $(wildcard *.bib)
 STY = $(wildcard *.sty) $(wildcard *.cls)
 
-all: $(PROPOSAL).pdf
+all :$(PROPOSAL).pdf $(REPORT).pdf
 
-$(PROPOSAL).pdf: $(TEX) $(REF) $(STY)
+$(PROPOSAL).pdf: $(PROPOSAL).tex $(REF) $(STY)
 	$(LATEX) $(PROPOSAL)
 	$(BIBTEX) $(PROPOSAL)
 	$(LATEX) $(PROPOSAL)
 	$(LATEX) $(PROPOSAL)
+
+$(REPORT).pdf: $(REPORT).tex $(REF) $(STY)
+	$(LATEX) $(REPORT)
+	$(BIBTEX) $(REPORT)
+	$(LATEX) $(REPORT)
+	$(LATEX) $(REPORT)
 
 clean:
 	$(RM) *.dvi *.aux *.log *.blg *.bbl *.out
@@ -21,3 +27,4 @@ clean:
 
 clean-all: clean
 	$(RM) $(PROPOSAL).pdf
+	$(RM) $(REPORT).pdf

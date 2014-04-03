@@ -1,0 +1,171 @@
+%\documentclass{acm_proc_article-sp}
+\documentclass{sig-alternate}
+
+\usepackage{url}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+
+\urlstyle{same}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\newenvironment{packed_enum}{
+\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+\newenvironment{packed_item}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+\newenvironment{packed_desc}{
+\begin{description}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{description}}
+
+% --- Metadata ---
+\permission{
+  This work is licensed under the Creative Commons Attribution 4.0
+  International License. To view a copy of this license, visit
+  \url{http://creativecommons.org/licenses/by/4.0/}.
+}
+\conferenceinfo{CU CS Systems Prelim,}{
+  Spring 2014. \\
+  \crnotice{Copyright held by author(s).}
+}
+\copyrightetc{
+  University of Colorado, Boulder \\
+  \the\acmcopyr
+}
+\crdata{03/2014}
+% --- End of Metadata ---
+
+\begin{document}
+
+\title{System and Data Security - A CS Systems Prelim}
+
+\numberofauthors{1}
+\author{
+  \alignauthor
+  Andy Sayler\\
+  \affaddr{University of Colorado}
+  \affaddr{Boulder, Colorado}
+  \email{andy.sayler@colorado.edu}
+}
+
+\maketitle
+
+\begin{abstract}
+Security is a core component of modern computer systems. From
+protecting our data to securing our communications, security across
+the computing spectrum is fundamental to the manner in which we
+leverage and trust computers. But the security of modern computing
+systems has not come easily: it has been learned and improved slowly
+over many years, sometimes at the cost of painful
+lessons. Furthermore, the modern state of the art in computing
+security still lea vs much to be desired. In this paper, I explore the
+development of the current state of the art in computer security
+focusing on four core components: cryptography, access control, file
+system security, and security management. Computer security is an
+inherently large topic, but these core topics provide a reasonable
+basis for the modern state of computer security. In particular, I seek
+to answer the question: ``How can we secure our systems and data in a
+robust, comprehensive, and easy-to-use manner?''. This question in
+examined from a historical perspective as well as the perspective of a
+modern user with modern use cases. This paper builds on the background
+work completed in my Master's Thesis~\cite{custos-masters}, further
+extending my analysis of the current state of the art and
+hypothesizing on future extensions to this state.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+We have reached the age of ubiquitous computing. There is not a facet
+of our lives that is not heavily integrated with the vast computing
+networks we have built and continues to expand. From our cell phones
+we use to communicate to the web sites on which we mange our life's
+savings to the hard drives in our laptops filled with our photos and
+personal documents, computers are not only everywhere, but often at
+the heart of our most intimate interactions. As such, the security of
+our computing infrastructure is a foremost concern in modern computing
+system design. But what is the state of the art in computing security?
+And how have we arrived at this state? These are question I address in
+this paper through the exploration and analysis of ten significant
+publications in the field. In particular, I break my analysis of the
+state of the art in computer security into four related topics:
+cryptography, access control, storage security, and managing
+security. These topics provide the basis of the bulk of the modern
+state of the art of computer security.
+
+On the topic of cryptography (Section \ref{sec:crypto}), I present the
+basics or modern cryptographic systems~\cite{Diffie1976}, extensions
+to these systems to accommodate the diversification of
+trust~\cite{Shamir1979}, and the manner in which these core concepts
+can be leverage in access control
+applications~\cite{Bethencourt2007}. On the topic of access control
+(Section \ref{sec:ac}), I present the basics of modern access control
+models~\cite{Sandhu1996}, the ways in which these models can
+incorporate cryptography to avoid the need for a trusted compute
+base~\cite{Bethencourt2007}, and the manner in which various access
+control schemes have been applied to modern file
+systems~\cite{Miltchev2008}. On the topic of storage security (Section
+\ref{sec:fs}), I present an effort to support file system distribution
+with minimal trust~\cite{Mazieres1999}, an overview of the security
+mechanism employed by a range of modern file system~\cite{Kher2005},
+and the manners in which modern file system implement access
+control~\cite{Miltchev2008}. Finally, on the topic of management
+(Section \ref{sec:mgmt}), I present an early effort to standardize the
+basic system security primitives~\cite{Samar1996}, techniques for
+making security more robust and simpler for the end user to
+leverage~\cite{Cox2002}, and modern efforts to unify security
+primitives across multiple administrative
+domains~\cite{Morgan2004}. These ten papers are by no means the
+complete body of prior art, but they do elucidate the core concepts
+relevant to the question at the core of this exam.
+
+In addition to exploring the historic contributions of the work
+mentioned above and the current state of the art they represent, I
+also suggest possible future expansions of this state. At it's core,
+this involves looking at the existing answers to the question
+question: ``How can we secure our systems and data in a robust,
+comprehensive, and easy-to-use manner?'' as well as proposing
+potential new answers. This hypothesizing is addressed with respect to
+the four core topics mentioned above within each of the relevant
+sections.
+
+\section{Cryptography}
+\label{sec:crypto}
+
+\section{Access Control}
+\label{sec:ac}
+
+\section{Storage Security}
+\label{sec:fs}
+
+\section{Managing Security}
+\label{sec:mgmt}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+% Bibliography
+\bibliographystyle{acm}
+\bibliography{proposal}
+
+\end{document}
