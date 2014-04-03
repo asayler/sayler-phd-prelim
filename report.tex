@@ -152,11 +152,312 @@ sections.
 \section{Cryptography}
 \label{sec:crypto}
 
+Cryptography is the basis of much of the modern computer security
+landscape. This is largely because it represent a security primitive
+that does not rely on trusting specific people, platforms, or systems
+in order to securely function. Instead, it requires that we place our
+trust in only one thing: the underlying math. This has led to the
+proliferation of cryptography as the security primitive on which many
+other security features are built.
+
+\subsection{History}
+
+Cryptography has a very long history: there is evidence of societies
+employing basic cryptographic systems in order to ``secure'' writing
+and messages dating back to thousands of years BCE. These early forays
+into cryptography, however, lacked the sound grounding in mathematical
+theory that makes cryptography so appealing today. I will thus skip
+over the bulk of cryptographic history involving them.
+
+Modern cryptography has its roots in the field of information theory
+that begin to develop during WWII and advanced quickly in the post war
+years. Much of information theory laid the basis for our ability to
+prove that a given cryptographic algorithm requires a certain amount
+of effort to crack in the absence of the ``key''. This led to the rise
+of mathematically ground symmetric encryption algorithms, designed for
+use with the growing availability of computers, by the early 1970s.
+
+Symmetric cryptography algorithms function on the principle that a
+single ``key'' is used to both encrypt and decrypt a message. This key
+must be securely stored, or if shared, securely exchanged between
+parties. Anyone with the key can decrypt the corresponding ciphertext
+the key was used to create. The security of a symmetric encryption
+cipher tends to be directly related to the length of the encryption
+key: the longer the key, the more secure the data encrypted with it
+is. Common key lengths generally considered secure today include
+128-bit keys, 256-bit keys, and 512-bit keys.
+
+While symmetric cryptography algorithms are useful in situations where
+a single actor will be both encrypting and decrypting a piece of data
+(and thus can hold the required key personally), they pose a major
+challenge it situations where multiple parties with to communicate
+securely. In this situation, the parties must find a way to securely
+communicate the required symmetric key. In the absence of other
+methods, the only real way to do while avoiding both eavesdroppers and
+interlopers is to meet in person and exchange the key manually. The
+tediousness and lack of practicality of this task, especially in
+modern digital communication systems where multiple actors may be
+continents apart, led researchers to seek a better method for secure
+data exchange in the absence of an inherently secure communication
+channel.
+
+The major breakthrough in solving this challenge came in 1976 with
+Diffe and Hellman's publication of ``New Directions in
+Cryptography''~\cite{Diffie1976}. Diffe and Hellman proposed a system
+for asymmetric cryptography: a cryptography system in which one key is
+used for encryption while a second, related, key is used for
+decryption. When properly designed, it is computationally unfeasible
+to derive one of the keys in an asymmetric cryptography system for the
+other, allowing a user to publish one of their keys for the public to
+consume while keeping their other key private. A member of the public
+can then use the user's public key to encrypt a message that only the
+holder of the private key will be able to decrypt. If all members of
+the public maintain such public/private key pairs, it become possible
+for any user to send any other user a message that only the recipient
+an read without requiring any form of pre-secure communication
+channel.
+
+\subsection{State of the Art}
+
+%% Modern digital encryption systems come in two flavors: symmetric and
+%% asymmetric encryption. Symmetric encryption algorithms use the same
+%% key to both encrypt and decrypt data. Asymmetric systems use two keys;
+%% when one key is used to encrypt the data, the other can be used to
+%% decrypt it, and vice versa. Both encryption systems have a place in
+%% the modern security landscape: symmetric systems for their high
+%% resistance to cracking and quick encrypt/decrypt performance, and
+%% asymmetric systems for their avoidance of the key exchange problem,
+%% making them the basis of modern public-key cryptography
+%% technologies~\cite{Menezes1996}.
+
+%% Symmetric encryption ciphers like AES (Rijndael)~\cite{Daemen1999},
+%% Twofish~\cite{Schneier1998}, or Camellia~\cite{Matsui2004} are
+%% well-established, fast, and secure methods for encrypting
+%% data. Symmetric encryption systems are the preferred means of
+%% encrypting files, hard disks, and other large chunks of data due to
+%% their speed and relative simplicity of implementation. They tend to be
+%% well understood, and are generally considered highly secure.
+
+\subsection{Future Extensions}
+
+%% Asymmetric encryption systems, unlike symmetric encryption systems,
+%% rely on two keys: when one key is used to encrypt the data, a second,
+%% related key is used to decrypt the data. This two key system makes
+%% asymmetric encryption ideal for sharing encrypted data: one key is
+%% publicly released, the other key is privately kept secret. Anyone can
+%% use the public key to encrypt data that only you can decrypt using
+%% your private key. Prime-factorization-based asymmetric encryption
+%% systems like RSA~\cite{Rivest1978, NIST2001} form the basis for modern
+%% public-key cryptography systems. Asymmetric ciphers tend to be slower
+%% and more complex than symmetric ciphers. Like symmetric ciphers, the
+%% security of an asymmetric cipher is related to the length of the keys
+%% in a key pair: longer keys are more secure. Standard key lengths for
+%% asymmetric keys (or at least those used by common factorization-based
+%% encryption system) tend to be an order of magnitude larger than
+%% asymmetric keys due to the more easily cracked nature of asymmetric
+%% key generation. Key lengths of 1024-bits, 2048-bits, and 4096-bits are
+%% all common.
+
+%% Often symmetric and asymmetric cryptography are used together, each
+%% system playing to its strength. Symmetric ciphers are good at quickly
+%% and securely encryption data, making them appropriate for the core of
+%% an encryption system. Symmetric ciphers, however, suffer from a lack
+%% of natively secure method for exchanging the required encryption
+%% key. This is where asymmetric cryptography and related secure key
+%% exchange systems like Diffie-Hellman~\cite{Diffie1976} come in
+%% handy. Since these systems provide the basis for securely exchanging
+%% data over insecure channels, they can be used to exchange the
+%% symmetric encryption key actually used to encrypt the underlying
+%% data. Such systems are common in many modern protocols like
+%% SSL~\cite{Freier2011}, TLS~\cite{Dierks2008}, and
+%% OpenPGP~\cite{Callas2007, openpgp}.
+
+%% Custos uses and supports a variety of the above technologies. In
+%% general, we believe that Custos will primarily be used to store
+%% symmetric encryption keys, due to symmetric ciphers core place in data
+%% encryption. It is also symmetric keys that require the most management
+%% since they lack a built-in secure exchange method. Custos, however,
+%% leverages asymmetric technologies like TLS to implement the secure
+%% exchange of the stored symmetric encryption keys and related
+%% authentication data. Custos is also perfectly capable of storing
+%% asymmetric keys in systems like SSH where centralized asymmetric key
+%% management is beneficial. Custos aims to improve upon existing systems
+%% for managing and exchanging encrypted data (e.g. OpenPGP) by providing
+%% more flexibility, extensible, and thus better usability than such
+%% system normally afford.
+
 \section{Access Control}
 \label{sec:ac}
 
+%% Over the years, we have developed a range of authentication techniques
+%% and protocols. The goal of any authentication system is to confirm the
+%% validity of a fact. In many authentication systems, the fact they aim
+%% to confirm is the positive association between a user's asserted
+%% identity and the user's actual identity. In short: is an actor who she
+%% claims to be? Authentication systems can also be used to verify the
+%% association between an actor and an object (i.e. does a user process
+%% access to a specific token or device), between an actor and a
+%% capability (i.e. as in a CAPTCHA~\cite{captcha}), or between a variety
+%% of more generalized facts and associations. Authentication and
+%% authorization are often complementary systems. Authentication is used
+%% to establish the identity of an actor. Authorization then leverages
+%% this identification as the basis of granting or denying specific
+%% rights to the actor.
+
+%% Early computer authentication schemes often revolved around the use of
+%% a single basic primitive: text-based passwords. To this day, passwords
+%% are probably the most common authentication primitive. Passwords are a
+%% form of shared secret. They operate on the premises that only a
+%% specific actor and the system with which she wishes to interact will
+%% be aware of the value of a unique text token. When the actor wishes to
+%% prove her identity, she provides her password to the system, which
+%% confirms that it matches the expected password. Often, instead of
+%% comparing passwords directly, passwords are first hashed before being
+%% stored. Hashing provides some measure of security against attackers
+%% wishing to brute-force a leaked password list. Hashing operates by
+%% dissociating the provided password value from the stored password
+%% value via a one-way hash function. Passwords are often used in an
+%% interactive manner, where an actor must provide her password at a live
+%% prompt. But passwords can also be used in non-interactive (albeit
+%% generally less secure) forms where the necessary password is simply
+%% stored and automatically provided when required. Passwords, while
+%% common, have a range of known limitations and issues. From reuse, to
+%% guess-ability, passwords have a lot of
+%% problems~\cite{goodin-passwords, goodin-bible, Mazurek2013,
+%%   Singer2013}. None the less, they remain ubiquitous authentication
+%% primitives to this day due to their ease of use and user familiarity.
+
+%% In addition to passwords, common authentication primitives also
+%% include asymmetric cryptography certificates, multi factor devices,
+%% biometrics, and contextual information. Systems like
+%% OpenSSH~\cite{openSSH} and OpenPGP~\cite{openpgp} support using
+%% standard asymmetric cryptography certificates as the basis for
+%% authentication. In such systems, an actor's public key is stored by
+%% the server. The user must prove they have access to the corresponding
+%% private key, often by decrypting a message encrypted with their public
+%% key, in order to authenticate. Certificate based authentication
+%% systems have the benefit of often being non-interactive; the user must
+%% simply posses the necessary certificate to gain access, no interactive
+%% password prompt required. They also tend to be far more resistant to
+%% brute-force attacks given the superior entropy of long,
+%% randomly-generated certificates over short, human-generated passwords
+
+%% Multi factor authentication systems are rising in popularity as a
+%% mitigation tactic for the risks of password based authentication
+%% systems. Such systems force the user to prove they have access to an
+%% object (often a cell phone~\cite{google-auth} or USB
+%% dongle~\cite{yubikey}) in addition to prompting the user for their
+%% password or related primitive. Where as a password is ``something you
+%% know'', a multi factor device is ``something you have'', the
+%% combination of which make up the multiple factors in ``multi-factor''
+%% authentication.
+
+%% Biometric authentication systems have also become more common. Many
+%% modern laptops and cell phone include fingerprint readers, and more
+%% exotic devices like retina or palm scanners are not uncommon in
+%% high-security installations. Systems have even been proposed that rely
+%% on a user's unique keystroke patterns to identify
+%% her~\cite{Peacock2004}. There are also a variety of contextual
+%% authentication systems, that aim to authenticate the user on the basis
+%% of various environmental data available when the user wishes to
+%% authenticate (i.e. IP address, time of day,
+%% etc)~\cite{Hulsebosch2005}. Such systems often provide a secondary
+%% authentication mechanism beyond a primary mechanism like a password or
+%% certificate.
+
+%% Moving beyond basic authentication primitives, there are also a range
+%% of existing authentication protocols and
+%% standards. Kerberos~\cite{Kohl1994, Neuman1994} was an early and
+%% widely deployed authentication system. It aims to provide secure
+%% authentication over untrusted networks, as well as to allow
+%% token-based single-sign-on access across multiple sites and
+%% services. Kerberos is still used widely today as part of the Microsoft
+%% suite of operating systems and in a number Linux and Unix
+%% environments. Similarly, SAML (Security Assertion Markup
+%% Language)~\cite{saml}, SASL (Simple Authentication and Security
+%% Layer)~\cite{sasl} are standardized formats for exchanging
+%% authentication and authorization data. SAML is the basis of
+%% authentication systems like Shibboleth~\cite{shibboleth, Leandro2012}
+%% whose aim is to create a standardized federated authentication system
+%% for use across the Internet. Systems like OAuth~\cite{oauth},
+%% OpenID~\cite{openid}, or Persona~\cite{persona} operate under a
+%% similar principle, allowing users to designate a federated Cloud-based
+%% identity providers who can be used to authenticate the user to a range
+%% of disparate web services.
+
+%% PAM~\cite{linux-pam, openpam} is a framework for integrating a variety
+%% of authentication primitives and systems in an application. PAM is
+%% used by Linux and a variety of other POSIX operating systems as the
+%% basis for a flexible user login authentication system. PAM exposes a
+%% standardized API for integrating various authentication technologies
+%% into the a generalized authentication framework.
+
+%% Custos aims to be flexible enough to incorporate a range of existing
+%% authentication primitives and systems based on the user's
+%% requirements. Custos also incorporates ideas from PAM related to the
+%% pluggability of authentication modules. The details of these points
+%% are discusses in subsequent chapters.
+
 \section{Storage Security}
 \label{sec:fs}
+
+%% Early storage and file system technologies often simply neglected
+%% security, lacking robust encryption and access control primitives.
+%% Fortunately, today there are a variety of secure storage systems
+%% available. Some of them are full stack systems that bundle security,
+%% distribution, and sharing in a single system. Others are layered
+%% systems, designed to add security atop existing lower level file
+%% storage technologies. All of them have limitations that Custos strives
+%% to overcome.
+
+%% Many modern storage systems include cryptographic security as part of
+%% their design. Such full stack systems bundle cryptography, distributed
+%% usage, data storage, and other features into a single
+%% package. Traditional network storage systems like
+%% NFS~\cite{Sandberg1985} or AFS~\cite{Howard1988} provide support for
+%% encrypting data as it travels over the network, but lack support for
+%% encrypting data at rest, requiring users to fully trust the system on
+%% which their data is stored or cached. Systems like
+%% RFS~\cite{Dong2011}, Keypad~\cite{Geambasu2011}, or
+%% CryptoCache~\cite{Jensen2000} are optimized for modern mobile device
+%% usage, and include features like encryption at rest, auditing, and
+%% multi-device support. Unfortunately, these systems lack support for
+%% multi-user sharing. Systems like OceanStore~\cite{Kubiatowicz2000} or
+%% Tahoe~\cite{Wilcox-O'Hearn2008} deal with securing data atop untrusted
+%% infrastructure, and include primitives for securely sharing and
+%% distributing files amongst users. These systems, however, lack support
+%% for the kinds of out-of-band (e.g. emailing files, transferring files
+%% on thumb drives, etc) sharing and syncing that are so common and
+%% natural today. In general, full stack systems are only useful if you
+%% are willing and able to utilize them as the entirety of your storage
+%% stack, and are not easily extended or combined with other
+%% technologies.
+
+%% Other modern secure storage systems follow in the Unix tradition of
+%% layered file systems, where each layer provides only a single function
+%% (e.g. redundancy, encryption, storage, etc). Systems like
+%% LUKS~\cite{luks} or eCryptfs~\cite{eCryptfs, Halcrow} are popular,
+%% widely deployed, layered encryption systems. They are capable of
+%% operating atop a variety of underlying file systems and are thus well
+%% suited for use on personal computers. Most of these systems, however,
+%% are not well suited for supporting secure multi-device syncing or
+%% secure multi-user sharing.
+
+%% All of the above systems, however, suffer from the traditional
+%% entanglement of key management and the underlying encryption. As we
+%% stated in the previous section, conflating these two items is to
+%% conflate policy and mechanism, a well known sin in usable and
+%% maintainable systems design~\cite{Wulf1974}. The bundling of key
+%% storage with the underlying encryption leads to a lack of flexible key
+%% management and access control capabilities. I am not the first to
+%% recognize this barrier. The SFS~\cite{Mazieres1999} file system was
+%% designed to separate key management from file storage, allowing for
+%% more flexible key management in the process. Likewise,
+%% Plutus~\cite{Kallahalla2003} strives toward separating key storage and
+%% access control from the underlying encryption. But both SFS and Plutus
+%% fail to fully define a standardized, generic, and flexible external
+%% system for storing and managing keys, making a true ``Key Storage as a
+%% Service'' architecture impossible to realize.
 
 \section{Managing Security}
 \label{sec:mgmt}
@@ -166,6 +467,9 @@ sections.
 
 % Bibliography
 \bibliographystyle{acm}
-\bibliography{proposal}
+\bibliography{prelim}
 
 \end{document}
+
+%%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache
+%%  LocalWords:  OceanStore SFS Plutus
