@@ -113,31 +113,33 @@ cryptography, access control, storage security, and managing
 security. These topics provide the basis of the bulk of the modern
 state of the art of computer security.
 
-On the topic of cryptography (Section \ref{sec:crypto}), I present the
+On the topic of cryptography (Section~\ref{sec:crypto}), I present the
 basics or modern cryptographic systems~\cite{Diffie1976}, extensions
 to these systems to accommodate the diversification of
 trust~\cite{Shamir1979}, and the manner in which these core concepts
 can be leverage in access control
 applications~\cite{Bethencourt2007}. On the topic of access control
-(Section \ref{sec:ac}), I present the basics of modern access control
+(Section~\ref{sec:ac}), I present the basics of modern access control
 models~\cite{Sandhu1996}, the ways in which these models can
 incorporate cryptography to avoid the need for a trusted compute
 base~\cite{Bethencourt2007}, and the manner in which various access
 control schemes have been applied to modern file
-systems~\cite{Miltchev2008}. On the topic of storage security (Section
-\ref{sec:fs}), I present an effort to support file system distribution
-with minimal trust~\cite{Mazieres1999}, an overview of the security
-mechanism employed by a range of modern file system~\cite{Kher2005},
-and the manners in which modern file system implement access
-control~\cite{Miltchev2008}. Finally, on the topic of management
-(Section \ref{sec:mgmt}), I present an early effort to standardize the
-basic system security primitives~\cite{Samar1996}, techniques for
-making security more robust and simpler for the end user to
-leverage~\cite{Cox2002}, and modern efforts to unify security
+systems~\cite{Miltchev2008}. On the topic of storage security
+(Section~\ref{sec:fs}), I present an effort to support file system
+distribution with minimal trust~\cite{Mazieres1999}, an overview of
+the security mechanism employed by a range of modern file
+system~\cite{Kher2005}, and the manners in which modern file system
+implement access control~\cite{Miltchev2008}. Finally, on the topic of
+management (Section~\ref{sec:mgmt}), I present an early effort to
+standardize the basic system security primitives~\cite{Samar1996},
+techniques for making security more robust and simpler for the end
+user to leverage~\cite{Cox2002}, and modern efforts to unify security
 primitives across multiple administrative
 domains~\cite{Morgan2004}. These ten papers are by no means the
 complete body of prior art, but they do elucidate the core concepts
-relevant to the question at the core of this exam.
+relevant to the question at the core of this exam. References to other
+relevant works will be provided where appropriate, but the bulk of my
+analyses will focus on the papers listed above.
 
 In addition to exploring the historic contributions of the work
 mentioned above and the current state of the art they represent, I
@@ -147,7 +149,10 @@ question: ``How can we secure our systems and data in a robust,
 comprehensive, and easy-to-use manner?'' as well as proposing
 potential new answers. This hypothesizing is addressed with respect to
 the four core topics mentioned above within each of the relevant
-sections.
+sections. This hypothesizing is intended to inform potential future
+research paths and projects.
+
+\newpage
 
 \section{Cryptography}
 \label{sec:crypto}
@@ -216,6 +221,88 @@ for any user to send any other user a message that only the recipient
 an read without requiring any form of pre-secure communication
 channel.
 
+Asymmetric cryptography relies on existence of ``trapdoor'' functions
+in order to operate. These functions can be quickly solved in one
+direction, but are computationally complex to reverse without a
+special piece of information (e.g. the 'key'). Factoring large numbers
+is a classic example of a trapdoor function (and the method on which
+many modern public key encryption systems are based). Factoring large
+numbers is computationally difficult in cases where some piece of
+secret information (e.g. one of the factors) is not known.
+
+Diffie and Hellman proposed a potential implementation of a public key
+cryptography system, although the first practical public key crypto
+system came a few years latter with the invention of the
+RSA~\cite{Rivest1978} algorithm. In addition to public/private key
+systems, Diffie and Hellman also proposed a system for joint key
+generation where two parties can negotiate a secrete key across an
+insecure connection. Like asymmetric cryptography, such a system can
+also be used to bootstrap secure communications across an insecure
+connection by allowing two parties to derive a secret key that can
+then be used to facilitate further secret communication using a
+symmetric encryption algorithm.
+
+Diffie and Hellman also introduce the concept that asymmetric
+encryption can be used to build the other key cryptographic primitives
+we have come to rely upon: cryptographic verification and
+cryptographic authentication. Cryptographic verification (also called
+a cryptographic ``signature'') is essentially the reverse of
+asymmetric encryption: instead of a member of the public using another
+party's public key to encrypt a message that only the target party can
+read, the target party uses their private key to encrypt a message
+that the public can then decrypt using the target's public key. Since
+only the target has access to the private key, and is thus capable of
+generating such a message, the target can ``prove'' that a given
+message comes from them and that it has not been altered in
+transit. Just an asymmetric encryption also gives us cryptographically
+secure signatures, cryptographically secure signatures can give us a
+form of cryptographically secure authentication. If a user generates a
+signed message saying ``I am John'' and sends it to an authentication
+server, the server can verify that the message signature is valid by
+checking it with John's public key, thus authenticating John. The
+server need only have a list of public keys for each user and can then
+use the fact that only the given user has access to the corresponding
+private key and is thus the only one capable of generating a signed
+message on the user's behalf as the basis of user authentication.
+
+Beyond the rise of public key cryptography, one of the other major
+cryptographic breakthroughs of the last fifty years was the invention
+is cryptographically secure secret sharing schemes. In particular, Adi
+Shamir (the 'S' for RSA~\cite{Rivest1978}) proposed a practical and
+robust secret sharing scheme in his 1979 paper ``How to share a
+secret''~\cite{Shamir1979}. In this work, he lays out the basics of
+what came to be known as Shamir Secret Sharing: a method for splitting
+a piece of information up into two or more pieces in a manner such
+that holders of any subset of the pieces cannot infer any information
+about the pieces they do not hold or the original information block as
+a whole. Shamir Secret Sharing allows a user to divide a piece of data
+D into N pieces of which K or more pieces can be used to recompute the
+original value of D. A user with fewer than K pieces, however, has no
+more information about the value of D than a user with no pieces. This
+system provides a highly useful method for distributing information
+amongst multiple parties or systems in situations where no single
+system can be fully trusted.
+
+Shamir Secret Sharing, unlike all known asymmetric encryption
+techniques, does not rely on computationally complexity of it's
+security. Instead, it is fundamentally secure based on basic
+information theory principles. Thus, unlike computationally secure
+systems like RSA, Shamir Secret Sharing can not be broken regardless
+of the amount of computational power one posses. Shamir Secret Sharing
+functions on the basis of defining a polynomial of degree (K-1) over a
+finite field with the Data D encoded as the first order-zero term. N
+points are then selected from this polynomial and distributed to the
+participants. Since K points (but no fewer) will uniquely identify the
+original polynomial, and thus allow the deviation of D, K users must
+combine their pieces in order to re-compute D.
+
+Shamir Secret Sharing (and related systems) are useful in a wide range
+of situations where one needs to distribute trust across multiple
+entities. In particular, secret sharing techniques are leveraged in
+cryptographically-based access control systems like that described
+in~\cite{Goyal2006}. Such systems will be discussed further in
+Section~\ref{sec:ac}.
+
 \subsection{State of the Art}
 
 %% Modern digital encryption systems come in two flavors: symmetric and
@@ -272,20 +359,6 @@ channel.
 %% data. Such systems are common in many modern protocols like
 %% SSL~\cite{Freier2011}, TLS~\cite{Dierks2008}, and
 %% OpenPGP~\cite{Callas2007, openpgp}.
-
-%% Custos uses and supports a variety of the above technologies. In
-%% general, we believe that Custos will primarily be used to store
-%% symmetric encryption keys, due to symmetric ciphers core place in data
-%% encryption. It is also symmetric keys that require the most management
-%% since they lack a built-in secure exchange method. Custos, however,
-%% leverages asymmetric technologies like TLS to implement the secure
-%% exchange of the stored symmetric encryption keys and related
-%% authentication data. Custos is also perfectly capable of storing
-%% asymmetric keys in systems like SSH where centralized asymmetric key
-%% management is beneficial. Custos aims to improve upon existing systems
-%% for managing and exchanging encrypted data (e.g. OpenPGP) by providing
-%% more flexibility, extensible, and thus better usability than such
-%% system normally afford.
 
 \section{Access Control}
 \label{sec:ac}
@@ -473,4 +546,4 @@ channel.
 \end{document}
 
 %%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache
-%%  LocalWords:  OceanStore SFS Plutus
+%%  LocalWords:  OceanStore SFS Plutus Adi Shamir
