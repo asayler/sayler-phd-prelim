@@ -299,66 +299,69 @@ combine their pieces in order to re-compute D.
 Shamir Secret Sharing (and related systems) are useful in a wide range
 of situations where one needs to distribute trust across multiple
 entities. In particular, secret sharing techniques are leveraged in
-cryptographically-based access control systems like that described
-in~\cite{Goyal2006}. Such systems will be discussed further in
-Section~\ref{sec:ac}.
+some cryptographically-based access control systems like that
+described in~\cite{Goyal2006}. Such systems will be discussed further
+in Section~\ref{sec:ac}.
 
 \subsection{State of the Art}
 
-%% Modern digital encryption systems come in two flavors: symmetric and
-%% asymmetric encryption. Symmetric encryption algorithms use the same
-%% key to both encrypt and decrypt data. Asymmetric systems use two keys;
-%% when one key is used to encrypt the data, the other can be used to
-%% decrypt it, and vice versa. Both encryption systems have a place in
-%% the modern security landscape: symmetric systems for their high
-%% resistance to cracking and quick encrypt/decrypt performance, and
-%% asymmetric systems for their avoidance of the key exchange problem,
-%% making them the basis of modern public-key cryptography
-%% technologies~\cite{Menezes1996}.
+Both symmetric and asymmetric encryption systems have a place in the
+modern security landscape: symmetric systems for their performance and
+resistance to cryptanalysis and asymmetric systems for their
+avoidance of the key exchange problem.  Often symmetric and asymmetric
+cryptography are used together, each system playing to its
+strength. Symmetric systems are good at quickly and securely
+encryption data, making them appropriate for the core of an encryption
+system. Symmetric ciphers, however, suffer from a lack of natively
+secure method for exchanging the required encryption key. This is
+where asymmetric cryptography and related secure key exchange systems
+come in handy. These systems provide the basis for securely exchanging
+data over insecure channels and they can be thus used to bootstrap
+symmetric encryption systems by facilitating the secure exchange of a
+symmetric encryption key which can then be used to encrypt the
+underlying data. Such systems are common in many modern protocols like
+SSL, TLS, PGP, and SSH.
 
-%% Symmetric encryption ciphers like AES (Rijndael)~\cite{Daemen1999},
-%% Twofish~\cite{Schneier1998}, or Camellia~\cite{Matsui2004} are
-%% well-established, fast, and secure methods for encrypting
-%% data. Symmetric encryption systems are the preferred means of
-%% encrypting files, hard disks, and other large chunks of data due to
-%% their speed and relative simplicity of implementation. They tend to be
-%% well understood, and are generally considered highly secure.
-%% Common key lengths generally considered secure today include
-%% 128-bit keys, 256-bit keys, and 512-bit keys.
+Modern symmetric encryption ciphers like AES (Rijndael), Twofish, or
+Camellia are well-established, fast, and secure methods for encrypting
+data. Symmetric encryption systems are the preferred means of
+encrypting files, hard disks, and other large chunks of data due to
+their speed and relative simplicity of implementation. They are also
+useful for encrypting streams of data in communication protocols like
+TLS/SSL or SSH. They tend to be well understood, and are generally
+considered highly secure (at least the well vetted ones). The strength
+of a given symmetric cryptography is directly related to the length of
+the associated encryption key. Common key lengths generally considered
+secure today include 128-bit keys, 256-bit keys, 384-bit keys, and
+512-bit keys.
+
+Modern asymmetric encryption systems include systems like RSA,
+ElGamal, ECDH, ECDSA, or ECIES. These systems are all built atop
+various one-way trapdoor functions. RSA is based on
+prime-factorization functions, ElGamal is based on discrete logarithm
+functions, and ECDH, ECDSA, and ECIES are all based on various
+elliptic curve functions. It is often useful to mix cipher suites
+relying on different trapdoor functions as a hedge against an
+efficient solution to any of the underlying function families being
+discovered, thus rendering the encryption using such a family
+obsolete. Within a given family the security of an asymmetric cipher
+is related to the length of the keys in a key pair: longer keys are
+more secure. Standard key lengths for asymmetric keys depend of the
+family of functions be used. In prime-factorization based system like
+RSA or discreet-log systems like ElGamal, key lengths of 1024-bits,
+2048-bits, and 4096-bits are all common (with 2048 considered to be
+best practice for general data and 4096 considered to be best practice
+for highly sensitive data). Elliptic curve based systems tend to use
+shorter keys: recommended sizes range from 160-bits to 512-bits
+(similar to symmetric key lengths).
 
 \subsection{Future Extensions}
 
-%% Asymmetric encryption systems, unlike symmetric encryption systems,
-%% rely on two keys: when one key is used to encrypt the data, a second,
-%% related key is used to decrypt the data. This two key system makes
-%% asymmetric encryption ideal for sharing encrypted data: one key is
-%% publicly released, the other key is privately kept secret. Anyone can
-%% use the public key to encrypt data that only you can decrypt using
-%% your private key. Prime-factorization-based asymmetric encryption
-%% systems like RSA~\cite{Rivest1978, NIST2001} form the basis for modern
-%% public-key cryptography systems. Asymmetric ciphers tend to be slower
-%% and more complex than symmetric ciphers. Like symmetric ciphers, the
-%% security of an asymmetric cipher is related to the length of the keys
-%% in a key pair: longer keys are more secure. Standard key lengths for
-%% asymmetric keys (or at least those used by common factorization-based
-%% encryption system) tend to be an order of magnitude larger than
-%% asymmetric keys due to the more easily cracked nature of asymmetric
-%% key generation. Key lengths of 1024-bits, 2048-bits, and 4096-bits are
-%% all common.
+Quantum
 
-%% Often symmetric and asymmetric cryptography are used together, each
-%% system playing to its strength. Symmetric ciphers are good at quickly
-%% and securely encryption data, making them appropriate for the core of
-%% an encryption system. Symmetric ciphers, however, suffer from a lack
-%% of natively secure method for exchanging the required encryption
-%% key. This is where asymmetric cryptography and related secure key
-%% exchange systems like Diffie-Hellman~\cite{Diffie1976} come in
-%% handy. Since these systems provide the basis for securely exchanging
-%% data over insecure channels, they can be used to exchange the
-%% symmetric encryption key actually used to encrypt the underlying
-%% data. Such systems are common in many modern protocols like
-%% SSL~\cite{Freier2011}, TLS~\cite{Dierks2008}, and
-%% OpenPGP~\cite{Callas2007, openpgp}.
+Randomness
+
+Key management
 
 \section{Access Control}
 \label{sec:ac}
@@ -546,4 +549,5 @@ Section~\ref{sec:ac}.
 \end{document}
 
 %%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache
-%%  LocalWords:  OceanStore SFS Plutus Adi Shamir
+%%  LocalWords:  OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
+%%  LocalWords:  ECIES
