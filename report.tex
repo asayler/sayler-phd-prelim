@@ -152,8 +152,6 @@ the four core topics mentioned above within each of the relevant
 sections. This hypothesizing is intended to inform potential future
 research paths and projects.
 
-\newpage
-
 \section{Cryptography}
 \label{sec:crypto}
 
@@ -414,8 +412,48 @@ secret management problem and remains an area of active research.
 \section{Access Control}
 \label{sec:ac}
 
-%% Over the years, we have developed a range of authentication techniques
-%% and protocols. The goal of any authentication system is to confirm the
+Over the years, we have developed a range of access control
+techniques. All of these techniques share a common goal: controlling
+access to a specific system, resource, or piece of data. Access
+control has to key components: authentication and
+authorization. Authentication is used to establish the identity of an
+actor. Authorization then leverages this identification as the basis
+of granting or denying specific capabilities to the actor. This
+section will discuss historic access control techniques, the current
+state of the access control art, and potential future access control
+additions.
+
+\subsection{History}
+
+Computer-based access control systems have been with us since the
+earliest multi-user (e.g. time sharing) operating systems. Early
+access control systems were primarily focused on the the Unix model of
+access control: users, groups, and file-level
+permissions. Authentication in these early systems was generally
+limited to username:password combinations and was hard coded into the
+\texttt{login} program. Each user was a member of one or more groups
+and each file had a owner and group. The three file permissions, read,
+write, and execute, were granted on the basis of a user's relationship
+to a given file: either the user was the file owner, the user was a
+member of the file group, or the user was neither of these
+things. This model is somewhat flexible, and counties to be used today
+as the core access control model in many Unix-like operating systems
+(e.g. BSD, Linux, OSX, etc).
+
+Trusted system arbiter
+
+ACLs
+
+RBAC
+
+Crypto Access Control
+
+\subsection{State of the Art}
+
+\subsection{Future Extensions}
+
+
+%% The goal of any authentication system is to confirm the
 %% validity of a fact. In many authentication systems, the fact they aim
 %% to confirm is the positive association between a user's asserted
 %% identity and the user's actual identity. In short: is an actor who she
@@ -424,10 +462,7 @@ secret management problem and remains an area of active research.
 %% access to a specific token or device), between an actor and a
 %% capability (i.e. as in a CAPTCHA~\cite{captcha}), or between a variety
 %% of more generalized facts and associations. Authentication and
-%% authorization are often complementary systems. Authentication is used
-%% to establish the identity of an actor. Authorization then leverages
-%% this identification as the basis of granting or denying specific
-%% rights to the actor.
+%% authorization are often complementary systems.
 
 %% Early computer authentication schemes often revolved around the use of
 %% a single basic primitive: text-based passwords. To this day, passwords
@@ -598,4 +633,4 @@ secret management problem and remains an area of active research.
 
 %%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache
 %%  LocalWords:  OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
-%%  LocalWords:  ECIES
+%%  LocalWords:  ECIES RBAC
