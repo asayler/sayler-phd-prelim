@@ -357,11 +357,59 @@ shorter keys: recommended sizes range from 160-bits to 512-bits
 
 \subsection{Future Extensions}
 
-Quantum
+While both symmetric and asymmetric cryptography are largely settled
+art at this point, there are a variety of challenges yet to be solved
+in the cryptography research realm. One of the constant threats to the
+settled cryptographic art is that of a major breakthrough in solving
+the currently ``hard'' problems used as the basis to a variety of
+trapdoor functions. One of the proposed methods for solving the
+existing trapdoor functions more quickly than currently possible is to
+use quantum computing approaches. While no practical attacks on
+existing cryptographic systems using quantum approaches are known,
+there are certainly researchers working on such approaches. There is
+also work being done in the opposite direction to try to leverage
+quantum techniques to build cryptographic systems that would be
+effectively unbreakable due to the underlying quantum limitations of
+our universe. Such techniques often involve leveraging ``observer''
+effect to detect eavesdropping on a communication channel, allowing
+the users to regenerate keys until they complete the negotiation
+unobserved. Again, however, there are no known practical
+implementations of quantum cryptography at this time.
 
-Randomness
+One of the other major challenges to cryptography today is the
+reliance on good sources of randomness to generate the secure
+cryptographic keys used in berths symmetric and asymmetric encryption
+systems. Finding and harnessing good randomness is challenging since
+it depends on having access to an sufficient amount of
+entropy. Traditionally, computing systems often leverage user
+interactions (e.g. mouse movements, key strokes, network interrupts,
+etc) as sources for OS-maintained entropy pools. The rise of cloud
+computing systems, however, posses challenges to using such sources:
+in the cloud, systems often run in highly homogeneous environments
+with few ``random'' user interactions. Coming up with secure ways to
+derive entropy and provide good randomness is such environments is a
+topic of active study. The importance of randomness to modern
+computing systems requires us to come up with secure ways of gathering
+and distributing entropy. Potential solutions range from building
+secure Entropy-as-a-Service systems that gather entropy from sources
+where it is abundant and redistribute it to source where it is scarce
+to using entropy-generating hardware that relies on unpredictable
+physical phenomena (e.g. atomic decay events) to derive randomness.
 
-Key management
+Finally, while strong cryptographic systems are well understood, there
+are a myriad of situations where cryptographic best practices are
+ignored or where cryptographic systems are improbable used, leading to
+security failings. Many of these issues can be linked to usability
+challenges within cryptographic systems: if a system is difficult to
+use or challenging to deploy, it will often go unused or wind up
+misconfigured and insecure. One of the major usability challenges
+present in all current cryptography systems is the management of
+private/secret keys. Keeping such keys secure while also enabling
+their use across a range of modern multi-user, multi-device, ephemeral
+resource use cases is extremely challenging and lacks a standard
+solution at this time. My previous master's thesis work,
+Custos~\cite{custos-masters}, proposes a potential solution to the
+secret management problem and remains an area of active research.
 
 \section{Access Control}
 \label{sec:ac}
