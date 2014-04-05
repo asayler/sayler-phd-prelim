@@ -426,137 +426,180 @@ additions.
 \subsection{History}
 
 Computer-based access control systems have been with us since the
-earliest multi-user (e.g. time sharing) operating systems. Early
-access control systems were primarily focused on the the Unix model of
-access control: users, groups, and file-level
-permissions. Authentication in these early systems was generally
-limited to username:password combinations and was hard coded into the
+earliest multi-user (e.g. time sharing) operating systems became
+popular in the 1970s and 1980s. Early access control systems were
+primarily focused around the Unix model of access control: users,
+groups, and read/write/execute file-level permissions. Authentication
+in these early systems was generally limited to username:password
+combinations, the mechanisms of which were hard coded into the
 \texttt{login} program. Each user was a member of one or more groups
 and each file had a owner and group. The three file permissions, read,
 write, and execute, were granted on the basis of a user's relationship
 to a given file: either the user was the file owner, the user was a
 member of the file group, or the user was neither of these
-things. This model is somewhat flexible, and counties to be used today
-as the core access control model in many Unix-like operating systems
-(e.g. BSD, Linux, OSX, etc).
+things. This model is generally flexible, and continues to be used
+today as the core access control model in many Unix-like operating
+systems (e.g. BSD, Linux, OSX, etc).
 
-Trusted system arbiter
+Access Control List (ACL) based schemes gained prominence in 1990s and
+were popularized by the Windows NT family of operating systems. ACLs
+extend the permission model beyond the basic Unix file permissions to
+include a wider range of file (e.g. read, write, delete, create, etc)
+and system-level permissions (e.g. shutdown, connect to network,
+etc). ACLs are associated with specific system objects (e.g. files,
+folders, OS subsystems, etc) and map a user or group to a list of
+permission that user or group possess. They generalize the Unix access
+model to accommodate a wider range of permissions and mappings between
+permissions and actors. ACL-based systems have been integrated into
+many modern Unix-like operating systems as an optional extension
+beyond the tradition Unix permissioning scheme.
 
-ACLs
+Exiting access control schemes are often groups into one of two
+classes: Mandatory Access Control (MAC) systems or Discretionary
+Access Control (DAC) Systems. While the lines between these two
+approaches are occasionally blurred, the basic difference between the
+two lies in which actors within a system have the ability to
+grant/extended permissions to other actors. In MAC system, all
+permissions are set by the system administrator and users have no
+ability to change these permissions themselves or transfer permissions
+to other users. DAC systems, in contrast, give users the ability to
+set their own permissions on objects they own or create, and to
+transfer these permissions to other users. A MAC-based system can be
+thought of as similar to a DAC system where the system administrator
+owns all files and never transfer this ownership to any other
+user. Traditional Unix access control systems as well ACL access
+control systems can generally be used in either MAC or DAC based
+systems. MAC systems are generally preferred in high security
+environments where the centralized management models they offer lead
+to tighter control over data. DAC systems are more common in general
+purpose systems where the extra flexibility they offer reduces the
+administrative burden. Most Unix-like systems are DAC systems by
+design, but extensions (e.g. SELinux) can be used to add MAC
+properties to these systems.
 
-RBAC
+Many of the early access control systems pose a host of manageability
+challenges. How do you coordinate the permissions of thousands of
+users across millions of objects? How do you revoke permissions for a
+defunct user? Or add a new user? To cope with many of these
+challenges, Sandhu, Coyne, Feinstein, and Youman proposed the concept
+of Role-Based Access Control Models in their 1996 paper by the same
+name~\cite{Sandhu1996}. Role-Based Access Control (RBAC) inserts an
+additional layer of indirection between users and permissions. In an
+RBAC system, users are assigned to one or more roles. Each role is
+then assigned one or more permissions. This model simplifies
+management by separating permission assignment for individual users,
+allowing permissions to be assigned on the basis of specific positions
+or duties within an organization and mapped to specific roles. Users
+are then assigned to these roles on the basis of whether or not they
+hold a specific positions or are required to perform a specific
+duty. Thus, adding or removing users does not require any modification
+to permission mappings, only role mappings. Likewise, adding or
+removing permissions does not require modifying use mappings, only
+role mappings as well. \cite{Sandhu1996} describe 4 classes of RBAC
+systems: $RBAC_0$ (the base model), $RBAC_1$ (the base model with the
+addition of role hierarchies and inheritance), $RBAC_2$ (the base
+model with the addition of constraints), and $RBAC_3$ (the combination
+of $RBAC_1$ and $RBAC_2$).
 
-Crypto Access Control
+The primary limitation of all of the all of the access control model
+mentioned thus far is their reliance on a trusted arbiter for
+enforcement: generally this trusted arbiter is the operating system or
+some other underlying program in charge of exposing the access control
+system. This means that the security of any of the access control
+systems is only as good as the security of the system enforcing them
+(e.g. the security of the OS). Thus, if the underlying OS or program
+is compromised, the access control system falls apart. Likewise,
+anyone in control of the underlying OS or program automatically gains
+full control over the access control system. This is an acceptable
+limitations in many situations, especially those based on a centrally
+managed system with existing physical security and administrative
+safeguards in place. But in distributed system or other systems where
+physical and management control in not guaranteed (e.g. the Cloud), a
+more robust system that lacks this ``trusted arbiter'' requirement is
+desirable.
+
+To overcome the need for a trusted enforcement mechanism in access
+control systems, researchers have turned to cryptographically-based
+access control systems. As mentioned in Section~\ref{sec:crypto},
+cryptographic-based system require no trust in external systems, only
+in the underlying math. Sahaie, Waters, et. al. propose several
+cryptographically-based access control systems in their 2006
+paper~\cite{Goyal2006} and it's 2007
+follow-up~\cite{Bethencourt2007}. They're systems are all based on the
+concept of Attribute-Based Encryption (ABE) schemes. ABE schemes allow
+a user to encrypt a document in manner such that the access control
+rules associated with the document are part of the encryption process
+itself. Thus, in order to decrypt/access a document, a user must
+satisfy one or more cryptographically guaranteed access control
+attributes. \cite{Goyal2006} allows user to encrypt documents that can
+only be decrypted by users possessing specific attribute polices
+encoded in their keys. \cite{Bethencourt2007} extended this concept to
+allow documents to be encrypted with a full access control policy tree
+embedded in the encryption process directly allowing only users who's
+private keys meet a generalized set of requirements to access the
+documents. Both these systems allow the construction of access control
+systems that do not require any trusted arbiter to regulate access to
+objects. Instead, the regulation in enforced by the underlying
+encryption.
 
 \subsection{State of the Art}
 
+Today, the state of the are in access control differ widely based on
+the system and application. As mentioned, many Linux and Unix-like
+systems still use basic Unix access control primitives largely
+unchanged over the last 20 to 30 years. This is largely due to the
+fact that these systems are ``good enough'' for many single-user and
+small group environments and the administrative burden of shifting to
+a more advanced system is simply not worth the effort. Most Linux
+systems today do support extended file ACLs, as well as system-level
+ACLs exposed by systems like PolicyKit. These systems allow users to
+move beyond the limitations of a pure Unix-like, file-centric access
+control scheme. That said, many users never need to deal with these
+items for the majority of day-to-day use cases.
+
+Windows-based operating systems make extensive use of ACL-based access
+control schemes. While, these schemes are useful in the Windows-domain
+environments used by most large corporations, many home and leisure
+Windows users never have any need to interact with file or system
+level ACLs. Modern Windows systems combine RBAC concepts with ACL
+concepts by allowing administrators to define role-based ``groups''
+that can then be used with specific permission assignments. Most
+stand-alone access control system bundled with specific systems
+(e.g. content management systems, etc) also take ques form both RBAC
+and ACL access control models. While these system do help to reduce
+the management burden of large systems, they are often prone to
+misconfiguration, the occurrences of which lead to many of the
+security breaches that occur today.
+
+Cryptographically-based access control schemes remain largely an
+academic novelty at this point. I am aware of no commercially or
+generally deployed software that leverage ABE or similar
+cryptographically-based access control schemes as the basis of their
+access control models. None the less, the increasing need to robust
+access control schemes that can be used across a range of untrusted
+infrastructure is an increasingly important need in the Cloud-based
+computing world. Thus, it is possible that we will see an increase in
+the practical deployment of these systems in the near future.
+
+Outside of permission-side access control models, there have also been
+advances in the authentication side of access control. Most modern
+access control systems support authorization primitives far more
+complex than basic username:password combinations. Several such
+systems are discussed in more detail in Section~\ref{sec:mgmt}. None
+the less, the vast majority of user authorization systems are still
+password based. To overcome the well known security deficiencies of
+user passwords, multi-factor authentication schemes are staring to
+gain prominence on high value target systems (e.g. email accounts,
+bank accounts), but such systems are largely still optional and are
+not in wide use amongst the general population.
+
 \subsection{Future Extensions}
 
+Authorization and authentication combination
 
-%% The goal of any authentication system is to confirm the
-%% validity of a fact. In many authentication systems, the fact they aim
-%% to confirm is the positive association between a user's asserted
-%% identity and the user's actual identity. In short: is an actor who she
-%% claims to be? Authentication systems can also be used to verify the
-%% association between an actor and an object (i.e. does a user process
-%% access to a specific token or device), between an actor and a
-%% capability (i.e. as in a CAPTCHA~\cite{captcha}), or between a variety
-%% of more generalized facts and associations. Authentication and
-%% authorization are often complementary systems.
+Multi-device systems / global uniqueness
 
-%% Early computer authentication schemes often revolved around the use of
-%% a single basic primitive: text-based passwords. To this day, passwords
-%% are probably the most common authentication primitive. Passwords are a
-%% form of shared secret. They operate on the premises that only a
-%% specific actor and the system with which she wishes to interact will
-%% be aware of the value of a unique text token. When the actor wishes to
-%% prove her identity, she provides her password to the system, which
-%% confirms that it matches the expected password. Often, instead of
-%% comparing passwords directly, passwords are first hashed before being
-%% stored. Hashing provides some measure of security against attackers
-%% wishing to brute-force a leaked password list. Hashing operates by
-%% dissociating the provided password value from the stored password
-%% value via a one-way hash function. Passwords are often used in an
-%% interactive manner, where an actor must provide her password at a live
-%% prompt. But passwords can also be used in non-interactive (albeit
-%% generally less secure) forms where the necessary password is simply
-%% stored and automatically provided when required. Passwords, while
-%% common, have a range of known limitations and issues. From reuse, to
-%% guess-ability, passwords have a lot of
-%% problems~\cite{goodin-passwords, goodin-bible, Mazurek2013,
-%%   Singer2013}. None the less, they remain ubiquitous authentication
-%% primitives to this day due to their ease of use and user familiarity.
-
-%% In addition to passwords, common authentication primitives also
-%% include asymmetric cryptography certificates, multi factor devices,
-%% biometrics, and contextual information. Systems like
-%% OpenSSH~\cite{openSSH} and OpenPGP~\cite{openpgp} support using
-%% standard asymmetric cryptography certificates as the basis for
-%% authentication. In such systems, an actor's public key is stored by
-%% the server. The user must prove they have access to the corresponding
-%% private key, often by decrypting a message encrypted with their public
-%% key, in order to authenticate. Certificate based authentication
-%% systems have the benefit of often being non-interactive; the user must
-%% simply posses the necessary certificate to gain access, no interactive
-%% password prompt required. They also tend to be far more resistant to
-%% brute-force attacks given the superior entropy of long,
-%% randomly-generated certificates over short, human-generated passwords
-
-%% Multi factor authentication systems are rising in popularity as a
-%% mitigation tactic for the risks of password based authentication
-%% systems. Such systems force the user to prove they have access to an
-%% object (often a cell phone~\cite{google-auth} or USB
-%% dongle~\cite{yubikey}) in addition to prompting the user for their
-%% password or related primitive. Where as a password is ``something you
-%% know'', a multi factor device is ``something you have'', the
-%% combination of which make up the multiple factors in ``multi-factor''
-%% authentication.
-
-%% Biometric authentication systems have also become more common. Many
-%% modern laptops and cell phone include fingerprint readers, and more
-%% exotic devices like retina or palm scanners are not uncommon in
-%% high-security installations. Systems have even been proposed that rely
-%% on a user's unique keystroke patterns to identify
-%% her~\cite{Peacock2004}. There are also a variety of contextual
-%% authentication systems, that aim to authenticate the user on the basis
-%% of various environmental data available when the user wishes to
-%% authenticate (i.e. IP address, time of day,
-%% etc)~\cite{Hulsebosch2005}. Such systems often provide a secondary
-%% authentication mechanism beyond a primary mechanism like a password or
-%% certificate.
-
-%% Moving beyond basic authentication primitives, there are also a range
-%% of existing authentication protocols and
-%% standards. Kerberos~\cite{Kohl1994, Neuman1994} was an early and
-%% widely deployed authentication system. It aims to provide secure
-%% authentication over untrusted networks, as well as to allow
-%% token-based single-sign-on access across multiple sites and
-%% services. Kerberos is still used widely today as part of the Microsoft
-%% suite of operating systems and in a number Linux and Unix
-%% environments. Similarly, SAML (Security Assertion Markup
-%% Language)~\cite{saml}, SASL (Simple Authentication and Security
-%% Layer)~\cite{sasl} are standardized formats for exchanging
-%% authentication and authorization data. SAML is the basis of
-%% authentication systems like Shibboleth~\cite{shibboleth, Leandro2012}
-%% whose aim is to create a standardized federated authentication system
-%% for use across the Internet. Systems like OAuth~\cite{oauth},
-%% OpenID~\cite{openid}, or Persona~\cite{persona} operate under a
-%% similar principle, allowing users to designate a federated Cloud-based
-%% identity providers who can be used to authenticate the user to a range
-%% of disparate web services.
-
-%% PAM~\cite{linux-pam, openpam} is a framework for integrating a variety
-%% of authentication primitives and systems in an application. PAM is
-%% used by Linux and a variety of other POSIX operating systems as the
-%% basis for a flexible user login authentication system. PAM exposes a
-%% standardized API for integrating various authentication technologies
-%% into the a generalized authentication framework.
-
-%% Custos aims to be flexible enough to incorporate a range of existing
-%% authentication primitives and systems based on the user's
-%% requirements. Custos also incorporates ideas from PAM related to the
-%% pluggability of authentication modules. The details of these points
-%% are discusses in subsequent chapters.
+Distributed Access Control Schemes
 
 \section{Storage Security}
 \label{sec:fs}
@@ -622,6 +665,34 @@ Crypto Access Control
 \section{Managing Security}
 \label{sec:mgmt}
 
+%% Moving beyond basic authentication primitives, there are also a range
+%% of existing authentication protocols and
+%% standards. Kerberos~\cite{Kohl1994, Neuman1994} was an early and
+%% widely deployed authentication system. It aims to provide secure
+%% authentication over untrusted networks, as well as to allow
+%% token-based single-sign-on access across multiple sites and
+%% services. Kerberos is still used widely today as part of the Microsoft
+%% suite of operating systems and in a number Linux and Unix
+%% environments. Similarly, SAML (Security Assertion Markup
+%% Language)~\cite{saml}, SASL (Simple Authentication and Security
+%% Layer)~\cite{sasl} are standardized formats for exchanging
+%% authentication and authorization data. SAML is the basis of
+%% authentication systems like Shibboleth~\cite{shibboleth, Leandro2012}
+%% whose aim is to create a standardized federated authentication system
+%% for use across the Internet. Systems like OAuth~\cite{oauth},
+%% OpenID~\cite{openid}, or Persona~\cite{persona} operate under a
+%% similar principle, allowing users to designate a federated Cloud-based
+%% identity providers who can be used to authenticate the user to a range
+%% of disparate web services.
+
+%% PAM~\cite{linux-pam, openpam} is a framework for integrating a variety
+%% of authentication primitives and systems in an application. PAM is
+%% used by Linux and a variety of other POSIX operating systems as the
+%% basis for a flexible user login authentication system. PAM exposes a
+%% standardized API for integrating various authentication technologies
+%% into the a generalized authentication framework.
+
+
 \section{Conclusion}
 \label{sec:conclusion}
 
@@ -631,6 +702,7 @@ Crypto Access Control
 
 \end{document}
 
-%%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache
+%%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache et
 %%  LocalWords:  OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
-%%  LocalWords:  ECIES RBAC
+%%  LocalWords:  ECIES RBAC ACL DAC SELinux Sandhu Coyne Feinstein al
+%%  LocalWords:  Youman Sahaie PolicyKit
