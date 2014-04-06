@@ -595,11 +595,51 @@ not in wide use amongst the general population.
 
 \subsection{Future Extensions}
 
-Authorization and authentication combination
+One of the major limitations to most access control system today is
+their lack of global name space or rules: access control rules are
+currently scoped to the system and administrative domain in which they
+are created, with little to no support for wider, globally-enforceable
+ruled. This creates a host of challenges implementing robust access
+control schemes across our modern multi-user, multi-device, loosely
+managed environments. As a basic example, tradition Unix file
+permissions are useless when used on portable media like USA flash
+drives since user IDs, groups, and permissions are all scoped to the
+local machine and do not extend to other machines on which you might
+wish to access the portable media. Cryptographically-based access
+control schemes like ABE are a step toward solving this problem by
+removing the need for a trusted host system. Still, such systems still
+pose many of the same challenges other cryptographic systems have:
+namely how to manage and control access to the underlying private keys
+in a secure yet globally accessible manner. In addition, a variety of
+system-specific distributed access control schemes will be discussed
+in the context of the file systems to which they apply in
+Section~\ref{sec:fs}. But few of these systems are generalized enough
+for use on a wide multi-system scale. Proving a secure, manageable,
+and usable access control systems that can operate on a global scale
+across a variety of distributed devices largely remains an open
+problem, and finding a solution will continue to increase in
+importance as our use cases continue to demand an increasingly global
+and distributed perspective.
 
-Multi-device systems / global uniqueness
-
-Distributed Access Control Schemes
+Beyond globally usable access control schemes, most access control
+system today have a fairly clear delineation of authentication and
+authorization. While this division makes since from a separation of
+duties standpoint and fits well into tradition access control schemes,
+it can also limit the expressiveness of an access control system. For
+example, strictly separating authentication and authorization makes it
+difficult to set up access control rules that depend on more than a
+single user's identity (e.g. time dependent, etc) and also make it
+difficult to operate in situations whee the concept of a single
+``user'' is not well defined (e.g. anonymous
+systems). In~\cite{custos-masters}, I explored relaxing the separation
+between authentication and authorization to build a more expressive
+access control scheme. Schemes like ABE also blur the liens between
+authentication and authorization in the name of increased
+expressiveness. How to strike a correct balance between a proper
+separation of authentication and authorization duties and a high level
+of expressiveness remains an open problem. Building expressive systems
+that are also easy to reason about, manage, and maintain is a relevant
+topic to future access control work.
 
 \section{Storage Security}
 \label{sec:fs}
