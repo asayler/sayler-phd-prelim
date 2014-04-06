@@ -644,20 +644,66 @@ topic to future access control work.
 \section{Storage Security}
 \label{sec:fs}
 
+Much of the work we perform on computers today is highly data
+centric. As such, the protection and control of our data is a core
+goal within the realm of computer security. The previous two sections
+explored ways to protect data cryptographically and via various
+generalized access control models. In this section, I'll look at data
+protection schemes built into storage systems directly.
+
 \subsection{History}
+
+Early storage and file system technologies often simply neglected
+security, lacking robust encryption and access control primitives. As
+mentioned in Section~\ref{sec:ac}, the rise of multi-user operating
+systems like Unix mandated the creation of basic file-system access
+control schemes. Thus we gained the previously mentioned Unix file
+access control and permissioning scheme as part of the virtual file
+system level inherent in all legacy and modern Unix-like operating
+systems. As previously stated, however, this system has a number of
+limitations: it supports only a single, basic access control model
+(owner, group, R/W/E permissions), it requires a trusted system for
+enforcement, and it is strongly coupled to a local system.
+
+The Windows NT file system access control model (implemented via the
+NTFS file system) extends the flexibility of the traditional Unix
+model by adding support for more expressive ACLs. These both allow the
+control of additional permissions (e.g. delete, create directory, etc)
+as well as more expressive user to permission mappings beyond the
+basic owner/group/other Unix model. Furthermore, the Windows NT model
+has the ability to delegate user authentication to a local Domain
+Controller (DC) capable of centrally managing all users from a single
+location. This expands the ability to control file access beyond the
+users associated with the local system to the users associated with an
+entire administrative domain. Still, this system still has many of the
+same limitations as the Unix model: the requirements for a trusted
+system for enforcement and the tight coupling to the local
+administrative domain.
+
+The rise of the Internet as a reliable and high speed system for
+connecting multiple machines across the world as well as the move
+toward Cloud computing models where computational resources are
+outsourced to dedicated providers has increased the demand for secure
+storage systems capable of spanning multiple systems and domains. In
+order to overcome the limitations posed by traditional file system
+security models accommodate the modern multi-user, multi-system use
+cases, researchers have proposed a number of newer systems. These
+systems try to address one or more of the limitations mentioned
+above. Some of them employ cryptographic security models to overcome
+the need for a trusted enforcement system. Others are designed to
+extended access control semantics beyond the local machine to large
+local networks or even the global internet. Still others explore the
+use of novel access control model more expressive then Unix
+permissions or Windows NT ACLs. Many system combine more than one of
+these approaches to build a fully featured next generation secure
+storage system.
+
+
 
 \subsection{State of the Art}
 
 \subsection{Future Extensions}
 
-%% Early storage and file system technologies often simply neglected
-%% security, lacking robust encryption and access control primitives.
-%% Fortunately, today there are a variety of secure storage systems
-%% available. Some of them are full stack systems that bundle security,
-%% distribution, and sharing in a single system. Others are layered
-%% systems, designed to add security atop existing lower level file
-%% storage technologies. All of them have limitations that Custos strives
-%% to overcome.
 
 %% Many modern storage systems include cryptographic security as part of
 %% their design. Such full stack systems bundle cryptography, distributed
@@ -757,4 +803,4 @@ topic to future access control work.
 %%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache et
 %%  LocalWords:  OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
 %%  LocalWords:  ECIES RBAC ACL DAC SELinux Sandhu Coyne Feinstein al
-%%  LocalWords:  Youman Sahaie PolicyKit
+%%  LocalWords:  Youman Sahaie PolicyKit NTFS
