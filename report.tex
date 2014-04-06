@@ -663,7 +663,10 @@ system level inherent in all legacy and modern Unix-like operating
 systems. As previously stated, however, this system has a number of
 limitations: it supports only a single, basic access control model
 (owner, group, R/W/E permissions), it requires a trusted system for
-enforcement, and it is strongly coupled to a local system.
+enforcement, and it is strongly coupled to a local system. Systems
+like NFS attempt to extend Unix file security semantics beyond the
+local machines and to remote sharing of files, but even these systems
+are limited to singular administrative domains and trusted systems.
 
 The Windows NT file system access control model (implemented via the
 NTFS file system) extends the flexibility of the traditional Unix
@@ -698,9 +701,93 @@ permissions or Windows NT ACLs. Many system combine more than one of
 these approaches to build a fully featured next generation secure
 storage system.
 
+Kher and Kim provide a survey of the various approaches to securing
+distributed storage systems in their 2005 paper ``Securing Distributed
+Storage: Challenges, techniques, and Systems''~\cite{Kher2005}. In it,
+they discuss the security models of various storage systems, sorting
+such systems into basic networked file systems, single-user
+cryptographic file systems, and multi-user cryptographic file
+systems. As previously mentioned, basic networked file systems rely on
+trusted systems and administrators for the enforcement of security
+rules. Examples of such systems include the Sun Network File System
+(NFS), the Andrew File Systems (AFS), and the Common Internet File
+System (CIFS/SMB). All of these systems are designed for use within
+local administrative domains and do not scale well to global,
+loosely-coupled distributed systems. To deal with the scalability
+issues, researchers have built system like SFS (discussed below) or
+OceanStore which aim to reduce the administrative burden of large
+scale distributed file systems. All of these systems, however, rely on
+some degree of system or administrator trust. In order to accommodate
+situations where users do not wish to place trust on the underlying
+system or remote servers, Kher and Kim discuss a handful of
+cryptographically-secure file systems. The best of these systems offer
+end-to-end cryptography, meaning that data is encrypted and decrypted
+on the client side and the server never has access to the unencrypted
+data.  Systems like the Cryptographic File Systems (CFS) provide basic
+single-user end-to-end file encryption. While end-to-end encryption is
+a powerful security model for enabling secure options atop untrusted
+systems, it does pose challenges with respect to multi-user,
+multi-device use cases since ti requires all clients to have access to
+private cryptographic credentials in order to effectively read or
+write files. In order to support both end-to-end encryption and
+multi-user scenarios, more complex systems like SiRiUS, Cephus, or
+Plutus.
 
+Miltchev, et. al. provide a second survey of success control
+techniques across a verity of distributed file systems in their 2008
+paper ``Decentralized Access Control in Distributed File
+Systems''~\cite{Miltchev2008}. They present a framework for analyzing
+the suitability of distributed file system for modern multi user,
+multi domain use cases by analyzing five underlying file system
+qualities: authentication, authorization, granularity, delegation, and
+revocation.  Miltchev, et. al. suggest that any secure large scale
+files system must successfully address the functionality of all five
+of these factors across multiple administrative domains in order to be
+an effective multi user, multi domain file system. In addition to the
+systems discussed in~\cite{Kher2005}, Miltchev, et. al. also introduce
+systems like Truffles, Bayou, WebFS, CapaFS, DisCFS, WebDAVA, and
+Fileteller as examples of systems that attempt to support multi
+domain, multi user, globally-accessible use cases. Miltchev,
+et. al. reach the following conclusions regrading successful secure
+multi-user, multi-domain file systems: the use of public-key
+cryptography for user authentication is an effective way to support
+autonomous delegation, capability-based access control systems tend to
+lack support for auditing and accountability, ACL-based access control
+systems pose scalability challenges when used across administrative
+domains, and revocation and user autonomy are often at odds.
+
+A good example of a modern multi-user distributed file system with
+many of the desirable qualities discussed previously is SFS, described
+by Mazi\`{e}res, et. al. in their 1999 paper ``Separating Key
+Management form File System Security''~\cite{Mazieres1999}. In this
+paper, they describe the design and implementation of the SFS file
+system. SFS is unique in that it is designed for global-scale file
+system operations and leverages cryptographic security while avoiding
+the need for tightly specified key management infrastructure. Such
+infrastructure often adds a large administrative burden, limiting file
+system expansion beyond a single administrative domain on the basis of
+management complexity. SFS achieves it;'s goals through the use of
+self-certifying file names: file names that encode the public key of
+remote file servers into the file path itself. Self-certifying path
+names allow SFS clients to bootstrap a cryptographically secure
+communication channel to nay remove server without requiring any large
+scale key-management infrastructure. SFS leverages authentication
+servers to verify users on the basis of asymmetric key pairs and uses
+user agents to help reduce the usability burden this might otherwise
+impose (see Section~\ref{sec:mgmt} for more details on agents). SFS is
+built atop the NFS distributed file system, and thus uses an a
+Unix-based access control model to regulate file and directory
+access. SFS's cryptographic capabilities help it to overcome the need
+for a fully trusted compute base for the enforcement of its security
+model. Extensions to SFS like GSFS help move SFS beyond the
+limitations of a single administrative domain to accommodate a more
+general global file system. SFS does not however provide full
+end-to-end encryption, so it still requires some trust of the
+underlying infrastructure and administration techniques.
 
 \subsection{State of the Art}
+
+Dropbox, Google Drive
 
 \subsection{Future Extensions}
 
@@ -803,4 +890,6 @@ storage system.
 %%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache et
 %%  LocalWords:  OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
 %%  LocalWords:  ECIES RBAC ACL DAC SELinux Sandhu Coyne Feinstein al
-%%  LocalWords:  Youman Sahaie PolicyKit NTFS
+%%  LocalWords:  Youman Sahaie PolicyKit NTFS Kher CIFS SMB CFS WebFS
+%%  LocalWords:  SiRiUS Cephus Miltchev CapaFS DisCFS WebDAVA Mazi
+%%  LocalWords:  Fileteller SFS's GSFS
