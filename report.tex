@@ -766,7 +766,7 @@ system operations and leverages cryptographic security while avoiding
 the need for tightly specified key management infrastructure. Such
 infrastructure often adds a large administrative burden, limiting file
 system expansion beyond a single administrative domain on the basis of
-management complexity. SFS achieves it;'s goals through the use of
+management complexity. SFS achieves it's goals through the use of
 self-certifying file names: file names that encode the public key of
 remote file servers into the file path itself. Self-certifying path
 names allow SFS clients to bootstrap a cryptographically secure
@@ -787,66 +787,99 @@ underlying infrastructure and administration techniques.
 
 \subsection{State of the Art}
 
-Dropbox, Google Drive
+As mentioned in Section~\ref{sec:ac}, the basic Unix and Windows NT
+final system security models are by far the most widely deployed file
+system security approaches. Where multi-system distributed file
+systems are concerned, NFS, AFS, and CIFS are the de facto
+standards. As discussed, all of these systems lack support for
+end-to-end cryptographic security, global access, and inter-domain
+sharing. They are the standard not because of their rich, modern
+feature sets (which they lack), but simply because they are adequate
+for many of the standard single user or single domain use cases and
+replacing them would be a larger burden than it is worth. Again, these
+are not ideal systems, they are simply ``good enough'' for many users,
+and thus remain the standard.
 
-eCryptFS, SSD Encryption, Full Disk Encryption
+In many instances, the tradition systems listed above are not so much
+threatened by the more advanced research systems previously discussed
+(e.g. SFS, Bayou, Plutus, etc) as they are threatened by the growing
+proliferation of cloud-based distributed storage service like Dropbox
+or Google Drive. Today, when users wish to share files across
+administrative boundaries (or even within these boundaries) or wish to
+sync files across multiple devises, they often do so using a dedicated
+file sharing/syncing service based in the cloud. These services tend
+to have highly polished user interfaces and overcome many of the
+single-domain, single-system restrictions of more traditional
+approaches like NFS or CIFS. While polished and easy to use, these
+systems do require placing full trust in the cloud providers that
+operate them. While most users seem willing to trade trust and privacy
+for the features these service provide, there is a growing
+understanding (a la Edward Snowden and our friends at the National
+Security Agency) of the privacy risk offloading data to the cloud
+involves. While these risks don't seem to deter a majority of users
+(at least this time), they do make such service strictly off limits
+within certain high security and regulatory realms. To date, no of the
+major cloud storage services offer access to end-to-end encryption
+schemes that would allow users to store they data in the cloud while
+also minimizing their need to trust a given cloud service
+provider. The reasons behind the lack of a cryptographically secure
+cloud service seems to be a combination of lack of user demand,
+usability challenges such a system would entail, and the conflicts
+such a system would pose for many cloud providers data0-mining based
+business models.
 
-PGP
+While cryptographically secure distributed or cloud-based file systems
+are not in wide spread use, there are a growing number of
+cryptographic secure local file systems worth mentioning. On Linux,
+systems like eCryptfs provide an overlay file system capable of
+performing transparent encryption on a subset of the systems file
+tree. Alternatively, systems like dm-crypt provide block-level
+encryption suitable for full-disk encryption schemes. Using a local
+disk encryption system helps to guard against data loss or compromise
+in the event that a storage device falls into an advisories
+hands. Such systems are particularly useful on mobile computing
+devices like laptops or tablets since these devices tend to be more
+prone to theft or loss. Systems like BitLocker on Windows or FileVault
+on OSX can be used to provide similar features. Even most modern
+SSD-based hard disks tend to offer on-board encryption features to
+help protect them in the event of a loss. All of these systems tend to
+be fairly user friendly and/or transparent. They often tie encryption
+keys to a user's login password, allowing a user to encrypt their
+system without requiring any more effort than they would exert during
+a normal password-based login process. This approach, however, does
+mean that such systems are not useful for protecting files that can be
+stolen while a user is actively logged into a system (e.g. via a
+malicious program). They only provide protection when a system is
+powered off, locked, or similarly put into a non-active state.
 
 \subsection{Future Extensions}
 
-Usability
+There is a lot of work to be done in order to make cryptographically
+secure, distributed file systems a day to day reality for most
+users. While theoretical research systems exist that can provide many
+benefits over the current status quo, many of these systems introduce
+usability challenges that make them unsuitable for the average
+user. As mentioned in previous sections, many of these usability
+challenges can be directly linked to the problems that arise managing
+private cryptographic keys across our modern multi-device, multi-user
+use cases. Usability is the major hurdle preventing cryptographically
+strong distributed storage systems form entering the
+mainstream. Proving systems that can offer cryptographic security
+while also achieving the kind of intuitive usability provided by
+service like Dropbox or Google Drive needs to be a major area of
+research if we wish for such systems to provide a benefit other than
+supporting tenure-track progress with the ivory tower.
 
-
-
-%% Many modern storage systems include cryptographic security as part of
-%% their design. Such full stack systems bundle cryptography, distributed
-%% usage, data storage, and other features into a single
-%% package. Traditional network storage systems like
-%% NFS~\cite{Sandberg1985} or AFS~\cite{Howard1988} provide support for
-%% encrypting data as it travels over the network, but lack support for
-%% encrypting data at rest, requiring users to fully trust the system on
-%% which their data is stored or cached. Systems like
-%% RFS~\cite{Dong2011}, Keypad~\cite{Geambasu2011}, or
-%% CryptoCache~\cite{Jensen2000} are optimized for modern mobile device
-%% usage, and include features like encryption at rest, auditing, and
-%% multi-device support. Unfortunately, these systems lack support for
-%% multi-user sharing. Systems like OceanStore~\cite{Kubiatowicz2000} or
-%% Tahoe~\cite{Wilcox-O'Hearn2008} deal with securing data atop untrusted
-%% infrastructure, and include primitives for securely sharing and
-%% distributing files amongst users. These systems, however, lack support
-%% for the kinds of out-of-band (e.g. emailing files, transferring files
-%% on thumb drives, etc) sharing and syncing that are so common and
-%% natural today. In general, full stack systems are only useful if you
-%% are willing and able to utilize them as the entirety of your storage
-%% stack, and are not easily extended or combined with other
-%% technologies.
-
-%% Other modern secure storage systems follow in the Unix tradition of
-%% layered file systems, where each layer provides only a single function
-%% (e.g. redundancy, encryption, storage, etc). Systems like
-%% LUKS~\cite{luks} or eCryptfs~\cite{eCryptfs, Halcrow} are popular,
-%% widely deployed, layered encryption systems. They are capable of
-%% operating atop a variety of underlying file systems and are thus well
-%% suited for use on personal computers. Most of these systems, however,
-%% are not well suited for supporting secure multi-device syncing or
-%% secure multi-user sharing.
-
-%% All of the above systems, however, suffer from the traditional
-%% entanglement of key management and the underlying encryption. As we
-%% stated in the previous section, conflating these two items is to
-%% conflate policy and mechanism, a well known sin in usable and
-%% maintainable systems design~\cite{Wulf1974}. The bundling of key
-%% storage with the underlying encryption leads to a lack of flexible key
-%% management and access control capabilities. I am not the first to
-%% recognize this barrier. The SFS~\cite{Mazieres1999} file system was
-%% designed to separate key management from file storage, allowing for
-%% more flexible key management in the process. Likewise,
-%% Plutus~\cite{Kallahalla2003} strives toward separating key storage and
-%% access control from the underlying encryption. But both SFS and Plutus
-%% fail to fully define a standardized, generic, and flexible external
-%% system for storing and managing keys, making a true ``Key Storage as a
-%% Service'' architecture impossible to realize.
+The rise of cloud-based services is only going to increase the demand
+for secure storage systems that can support multi-user, multi-device,
+multi-domain user cases while also minimizing the need to trust cloud
+providers. Providing such a system will open up the growing range of
+cloud service to an even wider audience, and will help to keep users
+in control of their data even as we increasingly outsource our
+computer resources. Custos~\cite{custos-masters} was one attempt at
+building a component of such a system. Other attempts and further
+research are required if we're serious about closing the cloud vs
+trust divide.
 
 \section{Managing Security}
 \label{sec:mgmt}
@@ -906,5 +939,6 @@ Usability
 %%  LocalWords:  OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
 %%  LocalWords:  ECIES RBAC ACL DAC SELinux Sandhu Coyne Feinstein al
 %%  LocalWords:  Youman Sahaie PolicyKit NTFS Kher CIFS SMB CFS WebFS
-%%  LocalWords:  SiRiUS Cephus Miltchev CapaFS DisCFS WebDAVA Mazi
-%%  LocalWords:  Fileteller SFS's GSFS
+%%  LocalWords:  SiRiUS Cephus Miltchev CapaFS DisCFS WebDAVA Mazi dm
+%%  LocalWords:  Fileteller SFS's GSFS Snowden BitLocker FileVault
+%%  LocalWords:  SSD
