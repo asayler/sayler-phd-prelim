@@ -176,8 +176,9 @@ that begin to develop during WWII and advanced quickly in the post war
 years. Much of information theory laid the basis for our ability to
 prove that a given cryptographic algorithm requires a certain amount
 of effort to crack in the absence of the ``key''. This led to the rise
-of mathematically ground symmetric encryption algorithms, designed for
-use with the growing availability of computers, by the early 1970s.
+of mathematically grounded symmetric encryption algorithms, designed
+for use with the growing availability of computers, by the early
+1970s.
 
 Symmetric cryptography algorithms function on the principle that a
 single ``key'' is used to both encrypt and decrypt a message. This key
@@ -191,41 +192,41 @@ is.
 While symmetric cryptography algorithms are useful in situations where
 a single actor will be both encrypting and decrypting a piece of data
 (and thus can hold the required key personally), they pose a major
-challenge it situations where multiple parties with to communicate
+challenge it situations where multiple parties wish to communicate
 securely. In this situation, the parties must find a way to securely
-communicate the required symmetric key. In the absence of other
-methods, the only real way to do while avoiding both eavesdroppers and
-interlopers is to meet in person and exchange the key manually. The
-tediousness and lack of practicality of this task, especially in
-modern digital communication systems where multiple actors may be
-continents apart, led researchers to seek a better method for secure
-data exchange in the absence of an inherently secure communication
-channel.
+communicate the required symmetric key. In the absence of
+cryptographic methods, the only way to securely exchange a key while
+avoiding both eavesdroppers and interlopers is to meet in person and
+exchange the key manually. The tediousness and lack of practicality of
+this task, especially in modern digital communication systems where
+multiple actors may be continents apart, led researchers to seek a
+better method for secure data exchange in the absence of an inherently
+secure communication channel.
 
 The major breakthrough in solving this challenge came in 1976 with
 Diffe and Hellman's publication of ``New Directions in
 Cryptography''~\cite{Diffie1976}. Diffe and Hellman proposed a system
 for asymmetric cryptography: a cryptography system in which one key is
-used for encryption while a second, related, key is used for
+used for encryption while a second related key is used for
 decryption. When properly designed, it is computationally unfeasible
-to derive one of the keys in an asymmetric cryptography system for the
-other, allowing a user to publish one of their keys for the public to
-consume while keeping their other key private. A member of the public
-can then use the user's public key to encrypt a message that only the
-holder of the private key will be able to decrypt. If all members of
-the public maintain such public/private key pairs, it become possible
-for any user to send any other user a message that only the recipient
-an read without requiring any form of pre-secure communication
-channel.
+to derive one of the keys in an asymmetric cryptography system form
+the other, allowing a user to publish one of their keys for the public
+to consume while keeping their other key private. A member of the
+public can then use the user's public key to encrypt a message that
+only the holder of the private key will be able to decrypt. If all
+members of the public maintain such public/private key pairs, it
+becomes possible for any user to send any other user a message that
+only the recipient an read without requiring any form of secure
+communication channel.
 
-Asymmetric cryptography relies on existence of ``trapdoor'' functions
-in order to operate. These functions can be quickly solved in one
-direction, but are computationally complex to reverse without a
-special piece of information (e.g. the 'key'). Factoring large numbers
-is a classic example of a trapdoor function (and the method on which
-many modern public key encryption systems are based). Factoring large
-numbers is computationally difficult in cases where some piece of
-secret information (e.g. one of the factors) is not known.
+Asymmetric cryptography relies on the existence of ``trapdoor''
+functions in order to operate. These functions can be quickly solved
+in one direction, but are computationally difficult to reverse without
+a special piece of information (e.g. the 'key'). Factoring large
+numbers is a classic example of a trapdoor function (and the method on
+which many modern public key encryption systems are based). Factoring
+large numbers is computationally difficult in cases where some piece
+of secret information (e.g. one of the factors) is not known.
 
 Diffie and Hellman proposed a potential implementation of a public key
 cryptography system, although the first practical public key crypto
@@ -234,14 +235,14 @@ RSA~\cite{Rivest1978} algorithm. In addition to public/private key
 systems, Diffie and Hellman also proposed a system for joint key
 generation where two parties can negotiate a secrete key across an
 insecure connection. Like asymmetric cryptography, such a system can
-also be used to bootstrap secure communications across an insecure
+be used to bootstrap secure communications across an insecure
 connection by allowing two parties to derive a secret key that can
 then be used to facilitate further secret communication using a
 symmetric encryption algorithm.
 
 Diffie and Hellman also introduce the concept that asymmetric
-encryption can be used to build the other key cryptographic primitives
-we have come to rely upon: cryptographic verification and
+encryption can be used to build the two additional core cryptographic
+primitives we have come to rely upon: cryptographic verification and
 cryptographic authentication. Cryptographic verification (also called
 a cryptographic ``signature'') is essentially the reverse of
 asymmetric encryption: instead of a member of the public using another
@@ -251,46 +252,47 @@ that the public can then decrypt using the target's public key. Since
 only the target has access to the private key, and is thus capable of
 generating such a message, the target can ``prove'' that a given
 message comes from them and that it has not been altered in
-transit. Just an asymmetric encryption also gives us cryptographically
-secure signatures, cryptographically secure signatures can give us a
-form of cryptographically secure authentication. If a user generates a
+transit. Just as asymmetric encryption gives rise to cryptographically
+secure signatures, cryptographically secure signatures can give rise
+to cryptographically secure authentication. If a user generates a
 signed message saying ``I am John'' and sends it to an authentication
 server, the server can verify that the message signature is valid by
-checking it with John's public key, thus authenticating John. The
-server need only have a list of public keys for each user and can then
-use the fact that only the given user has access to the corresponding
-private key and is thus the only one capable of generating a signed
-message on the user's behalf as the basis of user authentication.
+checking it using John's public key, and thus authenticating John in
+the process. The server need only have a list of public keys for each
+user. It can then leverage the assertion that only the indented user
+has access to the corresponding private key for each of the server's
+public keys, and is thus the only one capable of generating a signed
+message on the user's behalf, as the basis of user authentication.
 
 Beyond the rise of public key cryptography, one of the other major
 cryptographic breakthroughs of the last fifty years was the invention
-is cryptographically secure secret sharing schemes. In particular, Adi
-Shamir (the 'S' for RSA~\cite{Rivest1978}) proposed a practical and
-robust secret sharing scheme in his 1979 paper ``How to share a
-secret''~\cite{Shamir1979}. In this work, he lays out the basics of
-what came to be known as Shamir Secret Sharing: a method for splitting
-a piece of information up into two or more pieces in a manner such
-that holders of any subset of the pieces cannot infer any information
-about the pieces they do not hold or the original information block as
-a whole. Shamir Secret Sharing allows a user to divide a piece of data
-D into N pieces of which K or more pieces can be used to recompute the
-original value of D. A user with fewer than K pieces, however, has no
-more information about the value of D than a user with no pieces. This
-system provides a highly useful method for distributing information
-amongst multiple parties or systems in situations where no single
-system can be fully trusted.
+of cryptographically secure secret sharing schemes. In particular, Adi
+Shamir (the 'S' form ``RSA'') proposed a practical and robust secret
+sharing scheme in his 1979 paper ``How to share a
+secret''~\cite{Shamir1979}. In this work, Shamir lays out the basics
+of what has come to be known as Shamir Secret Sharing: a method for
+splitting a piece of information up into two or more pieces in a
+manner such that holders of any subset of the pieces cannot infer any
+information about the pieces they do not hold or the original
+information block as a whole. Shamir Secret Sharing allows a user to
+divide a piece of D data into N pieces of which K or more pieces can
+be used to recompute the original value of D. A user with fewer than K
+pieces, however, has no more information about the value of D than a
+user with no pieces. This system provides a highly useful method for
+distributing information amongst multiple parties or systems in
+situations where no single party or system can be fully trusted.
 
 Shamir Secret Sharing, unlike all known asymmetric encryption
-techniques, does not rely on computationally complexity of it's
-security. Instead, it is fundamentally secure based on basic
-information theory principles. Thus, unlike computationally secure
-systems like RSA, Shamir Secret Sharing can not be broken regardless
-of the amount of computational power one posses. Shamir Secret Sharing
-functions on the basis of defining a polynomial of degree (K-1) over a
-finite field with the Data D encoded as the first order-zero term. N
-points are then selected from this polynomial and distributed to the
+techniques, does not rely on computational complexity as the basis of
+its security. Instead, it is fundamentally secure based on information
+theory principles. Thus, unlike computationally secure systems such as
+RSA, Shamir Secret Sharing can not be broken regardless of the amount
+of computational power one posses. Shamir Secret Sharing functions on
+the basis of defining a polynomial of degree (K-1) over a finite field
+with the D data encoded as the first order-zero term. N points are
+then selected from this polynomial and distributed to the
 participants. Since K points (but no fewer) will uniquely identify the
-original polynomial, and thus allow the deviation of D, K users must
+original polynomial, and thus allow the derivation of D, K users must
 combine their pieces in order to re-compute D.
 
 Shamir Secret Sharing (and related systems) are useful in a wide range
@@ -327,8 +329,8 @@ their speed and relative simplicity of implementation. They are also
 useful for encrypting streams of data in communication protocols like
 TLS/SSL or SSH. They tend to be well understood, and are generally
 considered highly secure (at least the well vetted ones). The strength
-of a given symmetric cryptography is directly related to the length of
-the associated encryption key. Common key lengths generally considered
+of a given symmetric cipher is directly related to the length of the
+associated encryption key. Common key lengths generally considered
 secure today include 128-bit keys, 256-bit keys, 384-bit keys, and
 512-bit keys.
 
@@ -358,45 +360,45 @@ While both symmetric and asymmetric cryptography are largely settled
 art at this point, there are a variety of challenges yet to be solved
 in the cryptography research realm. One of the constant threats to the
 settled cryptographic art is that of a major breakthrough in solving
-the currently ``hard'' problems used as the basis to a variety of
-trapdoor functions. One of the proposed methods for solving the
-existing trapdoor functions more quickly than currently possible is to
-use quantum computing approaches. While no practical attacks on
-existing cryptographic systems using quantum approaches are known,
-there are certainly researchers working on such approaches. There is
-also work being done in the opposite direction to try to leverage
-quantum techniques to build cryptographic systems that would be
-effectively unbreakable due to the underlying quantum limitations of
-our universe. Such techniques often involve leveraging ``observer''
-effect to detect eavesdropping on a communication channel, allowing
-the users to regenerate keys until they complete the negotiation
-unobserved. Again, however, there are no known practical
+the currently ``hard'' problems used as the basis for a variety of
+trapdoor functions. One of the proposed methods for solving existing
+trapdoor functions more quickly than currently possible is to use
+quantum computing approaches. While no practical attacks on existing
+cryptographic systems using quantum approaches are known, there are
+certainly researchers working on such approaches. There is also work
+being done in the opposite direction to try to leverage quantum
+techniques to build cryptographic systems that would be effectively
+unbreakable due to the underlying quantum limitations of our
+universe. Such techniques often involve leveraging the quantum
+``observer'' effect to detect eavesdropping on a communication
+channel, allowing the users to regenerate keys until they complete the
+negotiation unobserved. Again, however, there are no known practical
 implementations of quantum cryptography at this time.
 
 One of the other major challenges to cryptography today is the
 reliance on good sources of randomness to generate the secure
-cryptographic keys used in berths symmetric and asymmetric encryption
+cryptographic keys used in both symmetric and asymmetric encryption
 systems. Finding and harnessing good randomness is challenging since
 it depends on having access to an sufficient amount of
-entropy. Traditionally, computing systems often leverage user
-interactions (e.g. mouse movements, key strokes, network interrupts,
-etc) as sources for OS-maintained entropy pools. The rise of cloud
-computing systems, however, posses challenges to using such sources:
-in the cloud, systems often run in highly homogeneous environments
-with few ``random'' user interactions. Coming up with secure ways to
-derive entropy and provide good randomness is such environments is a
-topic of active study. The importance of randomness to modern
-computing systems requires us to come up with secure ways of gathering
-and distributing entropy. Potential solutions range from building
-secure Entropy-as-a-Service systems that gather entropy from sources
-where it is abundant and redistribute it to source where it is scarce
-to using entropy-generating hardware that relies on unpredictable
-physical phenomena (e.g. atomic decay events) to derive randomness.
+entropy. Traditionally, computing systems leverage user interactions
+(e.g. mouse movements, key strokes, network interrupts, etc) as the
+sources for OS-maintained entropy pools. The rise of cloud computing
+systems, however, posses challenges to using such sources: in the
+cloud, systems often run in highly homogeneous environments with few
+``random'' user interactions. Coming up with secure ways to derive
+entropy and provide good randomness is such environments is a topic of
+active study. The importance of randomness to modern computing systems
+requires us to come up with secure ways of gathering and distributing
+entropy. Potential solutions range from building secure
+Entropy-as-a-Service systems that gather entropy from sources where it
+is abundant and redistribute it to source where it is scarce to using
+entropy-generating hardware that relies on unpredictable physical
+phenomena (e.g. atomic decay events) to derive randomness.
 
 Finally, while strong cryptographic systems are well understood, there
 are a myriad of situations where cryptographic best practices are
-ignored or where cryptographic systems are improbable used, leading to
-security failings. Many of these issues can be linked to usability
+ignored or where cryptographic systems are unpractical to use, leading
+to security failings. Many of these issues can be linked to usability
 challenges within cryptographic systems: if a system is difficult to
 use or challenging to deploy, it will often go unused or wind up
 misconfigured and insecure. One of the major usability challenges
@@ -406,7 +408,9 @@ their use across a range of modern multi-user, multi-device, ephemeral
 resource use cases is extremely challenging and lacks a standard
 solution at this time. My previous master's thesis work,
 Custos~\cite{custos-masters}, proposes a potential solution to the
-secret management problem and remains an area of active research.
+secret management problem and remains an area of active
+research. Other approaches to alleviating usability issues are
+discussed in Section~\ref{sec:mgmt}.
 
 \section{Access Control}
 \label{sec:ac}
