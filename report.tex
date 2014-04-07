@@ -417,14 +417,13 @@ discussed in Section~\ref{sec:mgmt}.
 
 Over the years, we have developed a range of access control
 techniques. All of these techniques share a common goal: controlling
-access to a specific system, resource, or piece of data. Access
-control has to key components: authentication and
-authorization. Authentication is used to establish the identity of an
+access to a specific system, resource, or piece of data. Must access
+control models have two key components: authentication and
+authorization.  Authentication is used to establish the identity of an
 actor. Authorization then leverages this identification as the basis
-of granting or denying specific capabilities to the actor. This
-section will discuss historic access control techniques, the current
-state of the access control art, and potential future access control
-additions.
+of granting or denying specific permissions to the actor. This section
+will discuss historic access control techniques, the current state of
+the access control art, and potential future access control additions.
 
 \subsection{History}
 
@@ -440,29 +439,29 @@ and each file had a owner and group. The three file permissions, read,
 write, and execute, were granted on the basis of a user's relationship
 to a given file: either the user was the file owner, the user was a
 member of the file group, or the user was neither of these
-things. This model is generally flexible, and continues to be used
-today as the core access control model in many Unix-like operating
-systems (e.g. BSD, Linux, OSX, etc).
+things. This model is fairly flexible, and continues to be used today
+as the core access control model in many Unix-like operating systems
+(e.g. BSD, Linux, OSX, etc).
 
 Access Control List (ACL) based schemes gained prominence in 1990s and
 were popularized by the Windows NT family of operating systems. ACLs
 extend the permission model beyond the basic Unix file permissions to
 include a wider range of file (e.g. read, write, delete, create, etc)
-and system-level permissions (e.g. shutdown, connect to network,
-etc). ACLs are associated with specific system objects (e.g. files,
-folders, OS subsystems, etc) and map a user or group to a list of
-permission that user or group possess. They generalize the Unix access
-model to accommodate a wider range of permissions and mappings between
-permissions and actors. ACL-based systems have been integrated into
-many modern Unix-like operating systems as an optional extension
-beyond the tradition Unix permissioning scheme.
+and system-level (e.g. shutdown, connect to network, etc)
+permissions. ACLs are associated with specific system objects
+(e.g. files, folders, OS subsystems, etc) and map a user or group to a
+list of permission that user or group possess. They generalize the
+Unix access model to accommodate a wider range of permissions and
+mappings between permissions and actors. ACL-based systems have been
+integrated into many modern Unix-like operating systems as an optional
+extension beyond the tradition Unix permissioning scheme.
 
-Exiting access control schemes are often groups into one of two
+Exiting access control schemes are often grouped into one of two
 classes: Mandatory Access Control (MAC) systems or Discretionary
 Access Control (DAC) Systems. While the lines between these two
 approaches are occasionally blurred, the basic difference between the
 two lies in which actors within a system have the ability to
-grant/extended permissions to other actors. In MAC system, all
+grant/extend permissions to other actors. In MAC system, all
 permissions are set by the system administrator and users have no
 ability to change these permissions themselves or transfer permissions
 to other users. DAC systems, in contrast, give users the ability to
@@ -483,43 +482,43 @@ properties to these systems.
 Many of the early access control systems pose a host of manageability
 challenges. How do you coordinate the permissions of thousands of
 users across millions of objects? How do you revoke permissions for a
-defunct user? Or add a new user? To cope with many of these
-challenges, Sandhu, Coyne, Feinstein, and Youman proposed the concept
-of Role-Based Access Control Models in their 1996 paper by the same
-name~\cite{Sandhu1996}. Role-Based Access Control (RBAC) inserts an
-additional layer of indirection between users and permissions. In an
-RBAC system, users are assigned to one or more roles. Each role is
-then assigned one or more permissions. This model simplifies
-management by separating permission assignment for individual users,
-allowing permissions to be assigned on the basis of specific positions
-or duties within an organization and mapped to specific roles. Users
-are then assigned to these roles on the basis of whether or not they
-hold a specific positions or are required to perform a specific
-duty. Thus, adding or removing users does not require any modification
-to permission mappings, only role mappings. Likewise, adding or
-removing permissions does not require modifying use mappings, only
-role mappings as well. \cite{Sandhu1996} describe 4 classes of RBAC
-systems: $RBAC_0$ (the base model), $RBAC_1$ (the base model with the
-addition of role hierarchies and inheritance), $RBAC_2$ (the base
-model with the addition of constraints), and $RBAC_3$ (the combination
-of $RBAC_1$ and $RBAC_2$).
+defunct user? Or add a new user? To cope with many of these challenges
+Sandhu, et. al. proposed the concept of Role-Based Access Control
+Models in their 1996 paper by the same name~\cite{Sandhu1996}.
+Role-Based Access Control (RBAC) inserts an additional layer of
+indirection between users and permissions. In an RBAC system, users
+are assigned to one or more roles. Each role is then assigned one or
+more permissions. This model simplifies management by separating
+permission assignment from specific users. RBAC permissions are
+assigned assigned on the basis of specific positions or duties within
+an organization and mapped to specific roles. Users are then assigned
+to these roles on the basis of whether or not they hold a specific
+positions or are required to perform a specific duty. Thus, adding or
+removing users does not require any modification to permission
+mappings, only role mappings. Likewise, adding or removing permissions
+does not require modifying user mappings, only role
+mappings. \cite{Sandhu1996} describe 4 classes of RBAC systems:
+$RBAC_0$ (the base model), $RBAC_1$ (the base model with the addition
+of role hierarchies and inheritance), $RBAC_2$ (the base model with
+the addition of constraints), and $RBAC_3$ (the combination of
+$RBAC_1$ and $RBAC_2$).
 
-The primary limitation of all of the all of the access control model
-mentioned thus far is their reliance on a trusted arbiter for
-enforcement: generally this trusted arbiter is the operating system or
-some other underlying program in charge of exposing the access control
-system. This means that the security of any of the access control
+The primary limitation of all of the access control models mentioned
+thus far is their reliance on a trusted arbiter for enforcement:
+generally this trusted arbiter is the operating system or some other
+underlying program in charge of enforcing the access control
+system. This means that the security of any of these access control
 systems is only as good as the security of the system enforcing them
 (e.g. the security of the OS). Thus, if the underlying OS or program
 is compromised, the access control system falls apart. Likewise,
-anyone in control of the underlying OS or program automatically gains
-full control over the access control system. This is an acceptable
-limitations in many situations, especially those based on a centrally
-managed system with existing physical security and administrative
-safeguards in place. But in distributed system or other systems where
-physical and management control in not guaranteed (e.g. the Cloud), a
-more robust system that lacks this ``trusted arbiter'' requirement is
-desirable.
+anyone in control of the underlying OS or program (e.g. an
+administrator) automatically gains full control over the access
+control system. This is an acceptable limitations in many situations,
+especially those based on a centrally managed system with existing
+physical security and administrative safeguards in place. But in
+distributed systems or other systems where physical and management
+control in not guaranteed (e.g. the cloud), a more robust system that
+lacks this ``trusted arbiter'' requirement is desirable.
 
 To overcome the need for a trusted enforcement mechanism in access
 control systems, researchers have turned to cryptographically-based
@@ -527,27 +526,27 @@ access control systems. As mentioned in Section~\ref{sec:crypto},
 cryptographic-based system require no trust in external systems, only
 in the underlying math. Sahaie, Waters, et. al. propose several
 cryptographically-based access control systems in their 2006
-paper~\cite{Goyal2006} and it's 2007
-follow-up~\cite{Bethencourt2007}. They're systems are all based on the
-concept of Attribute-Based Encryption (ABE) schemes. ABE schemes allow
-a user to encrypt a document in manner such that the access control
-rules associated with the document are part of the encryption process
-itself. Thus, in order to decrypt/access a document, a user must
-satisfy one or more cryptographically guaranteed access control
-attributes. \cite{Goyal2006} allows user to encrypt documents that can
-only be decrypted by users possessing specific attribute polices
-encoded in their keys. \cite{Bethencourt2007} extended this concept to
-allow documents to be encrypted with a full access control policy tree
-embedded in the encryption process directly allowing only users who's
-private keys meet a generalized set of requirements to access the
-documents. Both these systems allow the construction of access control
-systems that do not require any trusted arbiter to regulate access to
-objects. Instead, the regulation in enforced by the underlying
-encryption.
+paper~\cite{Goyal2006} and its 2007 follow-up~\cite{Bethencourt2007}.
+These two systems are based on the concept of Attribute-Based
+Encryption (ABE) schemes. ABE schemes allow a user to encrypt a
+document in a manner such that the access control rules associated
+with the document are part of the encryption process itself. Thus, in
+order to decrypt/access a document, a user must satisfy one or more
+cryptographically guaranteed access control attributes.
+\cite{Goyal2006} allows user to encrypt documents that can only be
+decrypted by users possessing specific attribute polices encoded in
+their keys. \cite{Bethencourt2007} extended this concept to allow
+documents to be encrypted with a full access control policy tree
+embedded in the encryption processed file directly allowing only users
+who's private keys meet a generalized set of requirements to access
+the documents. Both these systems allow the construction of access
+control systems that do not require any trusted arbiter to regulate
+access to objects. Instead, the regulation in enforced by the
+underlying encryption backed by the associated math.
 
 \subsection{State of the Art}
 
-Today, the state of the are in access control differ widely based on
+Today, the state of the are in access control differs widely based on
 the system and application. As mentioned, many Linux and Unix-like
 systems still use basic Unix access control primitives largely
 unchanged over the last 20 to 30 years. This is largely due to the
@@ -558,7 +557,7 @@ systems today do support extended file ACLs, as well as system-level
 ACLs exposed by systems like PolicyKit. These systems allow users to
 move beyond the limitations of a pure Unix-like, file-centric access
 control scheme. That said, many users never need to deal with these
-items for the majority of day-to-day use cases.
+more advanced systems for the majority of day-to-day use cases.
 
 Windows-based operating systems make extensive use of ACL-based access
 control schemes. While, these schemes are useful in the Windows-domain
@@ -567,20 +566,20 @@ Windows users never have any need to interact with file or system
 level ACLs. Modern Windows systems combine RBAC concepts with ACL
 concepts by allowing administrators to define role-based ``groups''
 that can then be used with specific permission assignments. Most
-stand-alone access control system bundled with specific systems
-(e.g. content management systems, etc) also take ques form both RBAC
+stand-alone access control systems bundled with specific applications
+(e.g. content management systems, etc) also take cues from both RBAC
 and ACL access control models. While these system do help to reduce
 the management burden of large systems, they are often prone to
 misconfiguration, the occurrences of which lead to many of the
-security breaches that occur today.
+security breaches that happen today.
 
 Cryptographically-based access control schemes remain largely an
 academic novelty at this point. I am aware of no commercially or
 generally deployed software that leverage ABE or similar
 cryptographically-based access control schemes as the basis of their
-access control models. None the less, the increasing need to robust
-access control schemes that can be used across a range of untrusted
-infrastructure is an increasingly important need in the Cloud-based
+access control models. None the less, the need for robust access
+control schemes that can be used across a range of untrusted
+infrastructure is only going to increase in our modern cloud-based
 computing world. Thus, it is possible that we will see an increase in
 the practical deployment of these systems in the near future.
 
@@ -593,19 +592,19 @@ the less, the vast majority of user authorization systems are still
 password based. To overcome the well known security deficiencies of
 user passwords, multi-factor authentication schemes are staring to
 gain prominence on high value target systems (e.g. email accounts,
-bank accounts), but such systems are largely still optional and are
-not in wide use amongst the general population.
+bank accounts), but such systems are most often optional and are not
+in wide use amongst the general population.
 
 \subsection{Future Extensions}
 
 One of the major limitations to most access control system today is
 their lack of global name space or rules: access control rules are
-currently scoped to the system and administrative domain in which they
+currently scoped to the system or administrative domain in which they
 are created, with little to no support for wider, globally-enforceable
-ruled. This creates a host of challenges implementing robust access
+rules. This creates a host of challenges implementing robust access
 control schemes across our modern multi-user, multi-device, loosely
-managed environments. As a basic example, tradition Unix file
-permissions are useless when used on portable media like USA flash
+managed environments. As a basic example, traditional Unix file
+permissions are useless when used on portable media like USB flash
 drives since user IDs, groups, and permissions are all scoped to the
 local machine and do not extend to other machines on which you might
 wish to access the portable media. Cryptographically-based access
@@ -617,7 +616,7 @@ in a secure yet globally accessible manner. In addition, a variety of
 system-specific distributed access control schemes will be discussed
 in the context of the file systems to which they apply in
 Section~\ref{sec:fs}. But few of these systems are generalized enough
-for use on a wide multi-system scale. Proving a secure, manageable,
+for use on a multi-application scale. Providing secure, manageable,
 and usable access control systems that can operate on a global scale
 across a variety of distributed devices largely remains an open
 problem, and finding a solution will continue to increase in
@@ -632,17 +631,17 @@ it can also limit the expressiveness of an access control system. For
 example, strictly separating authentication and authorization makes it
 difficult to set up access control rules that depend on more than a
 single user's identity (e.g. time dependent, etc) and also make it
-difficult to operate in situations whee the concept of a single
-``user'' is not well defined (e.g. anonymous
-systems). In~\cite{custos-masters}, I explored relaxing the separation
-between authentication and authorization to build a more expressive
-access control scheme. Schemes like ABE also blur the liens between
+difficult to operate in situations where the concept of a single
+``user'' is not well defined (e.g. anonymous systems).
+In~\cite{custos-masters}, I explored relaxing the separation between
+authentication and authorization to build a more expressive access
+control scheme. Schemes like ABE also blur the lines between
 authentication and authorization in the name of increased
 expressiveness. How to strike a correct balance between a proper
 separation of authentication and authorization duties and a high level
 of expressiveness remains an open problem. Building expressive systems
 that are also easy to reason about, manage, and maintain is a relevant
-topic to future access control work.
+topic to future access control advances.
 
 \section{Storage Security}
 \label{sec:fs}
