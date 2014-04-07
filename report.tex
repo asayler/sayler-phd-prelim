@@ -646,12 +646,12 @@ topic to future access control advances.
 \section{Storage Security}
 \label{sec:fs}
 
-Much of the work we perform on computers today is highly data
-centric. As such, the protection and control of our data is a core
-goal within the realm of computer security. The previous two sections
-explored ways to protect data cryptographically and via various
-generalized access control models. In this section, I'll look at data
-protection schemes built into storage systems directly.
+Much of the work we perform on computers today is highly
+data-centric. As such, the protection and control of our data is a
+core goal within the realm of computer security. The previous two
+sections explored ways to protect data cryptographically and via
+various generalized access control models. In this section, I'll look
+at data protection schemes built into storage systems directly.
 
 \subsection{History}
 
@@ -661,13 +661,13 @@ mentioned in Section~\ref{sec:ac}, the rise of multi-user operating
 systems like Unix mandated the creation of basic file-system access
 control schemes. Thus we gained the previously mentioned Unix file
 access control and permissioning scheme as part of the virtual file
-system level inherent in all legacy and modern Unix-like operating
-systems. As previously stated, however, this system has a number of
-limitations: it supports only a single, basic access control model
-(owner, group, R/W/E permissions), it requires a trusted system for
-enforcement, and it is strongly coupled to a local system. Systems
+system (VFS) abstraction inherent in all legacy and modern Unix-like
+operating systems. As previously stated, however, this system has a
+number of limitations: it supports only a single, basic access control
+model (owner, group, R/W/E permissions), it requires a trusted system
+for enforcement, and it is strongly coupled to a local system. Systems
 like NFS attempt to extend Unix file security semantics beyond the
-local machines and to remote sharing of files, but even these systems
+local machine allowing remote sharing of files, but even these systems
 are limited to singular administrative domains and trusted systems.
 
 The Windows NT file system access control model (implemented via the
@@ -681,31 +681,30 @@ Controller (DC) capable of centrally managing all users from a single
 location. This expands the ability to control file access beyond the
 users associated with the local system to the users associated with an
 entire administrative domain. Still, this system still has many of the
-same limitations as the Unix model: the requirements for a trusted
+same limitations as the Unix model: the requirement for a trusted
 system for enforcement and the tight coupling to the local
 administrative domain.
 
 The rise of the Internet as a reliable and high speed system for
 connecting multiple machines across the world as well as the move
-toward Cloud computing models where computational resources are
+toward cloud computing models where computational resources are
 outsourced to dedicated providers has increased the demand for secure
 storage systems capable of spanning multiple systems and domains. In
 order to overcome the limitations posed by traditional file system
-security models accommodate the modern multi-user, multi-system use
+security models and accommodate modern multi-user, multi-system use
 cases, researchers have proposed a number of newer systems. These
 systems try to address one or more of the limitations mentioned
 above. Some of them employ cryptographic security models to overcome
 the need for a trusted enforcement system. Others are designed to
-extended access control semantics beyond the local machine to large
-local networks or even the global internet. Still others explore the
-use of novel access control model more expressive then Unix
-permissions or Windows NT ACLs. Many system combine more than one of
-these approaches to build a fully featured next generation secure
-storage system.
+extend access control semantics beyond the local machine to large
+networks or even the global internet. Still others explore the use of
+novel access control models more expressive then Unix permissions or
+Windows NT ACLs. Many system combine more than one of these approaches
+to build a fully featured next generation secure storage system.
 
 Kher and Kim provide a survey of the various approaches to securing
 distributed storage systems in their 2005 paper ``Securing Distributed
-Storage: Challenges, techniques, and Systems''~\cite{Kher2005}. In it,
+Storage: Challenges, Techniques, and Systems''~\cite{Kher2005}. In it,
 they discuss the security models of various storage systems, sorting
 such systems into basic networked file systems, single-user
 cryptographic file systems, and multi-user cryptographic file
@@ -727,36 +726,38 @@ end-to-end cryptography, meaning that data is encrypted and decrypted
 on the client side and the server never has access to the unencrypted
 data.  Systems like the Cryptographic File Systems (CFS) provide basic
 single-user end-to-end file encryption. While end-to-end encryption is
-a powerful security model for enabling secure options atop untrusted
+a powerful security model for enabling secure storage atop untrusted
 systems, it does pose challenges with respect to multi-user,
-multi-device use cases since ti requires all clients to have access to
-private cryptographic credentials in order to effectively read or
-write files. In order to support both end-to-end encryption and
-multi-user scenarios, more complex systems like SiRiUS, Cephus, or
+multi-device use cases since it generally requires that all clients
+have access to private cryptographic credentials in order to
+effectively read or write files. In order to support both end-to-end
+encryption and multi-user scenarios, researchers have proposed
+multi-user cryptographic storage systems like SiRiUS, Cephus, or
 Plutus.
 
-Miltchev, et. al. provide a second survey of success control
-techniques across a verity of distributed file systems in their 2008
-paper ``Decentralized Access Control in Distributed File
+Miltchev, et. al. provide a survey of access control techniques across
+a variety of distributed file systems in their 2008 paper
+``Decentralized Access Control in Distributed File
 Systems''~\cite{Miltchev2008}. They present a framework for analyzing
-the suitability of distributed file system for modern multi user,
-multi domain use cases by analyzing five underlying file system
-qualities: authentication, authorization, granularity, delegation, and
-revocation.  Miltchev, et. al. suggest that any secure large scale
-files system must successfully address the functionality of all five
-of these factors across multiple administrative domains in order to be
-an effective multi user, multi domain file system. In addition to the
-systems discussed in~\cite{Kher2005}, Miltchev, et. al. also introduce
-systems like Truffles, Bayou, WebFS, CapaFS, DisCFS, WebDAVA, and
-Fileteller as examples of systems that attempt to support multi
-domain, multi user, globally-accessible use cases. Miltchev,
-et. al. reach the following conclusions regrading successful secure
-multi-user, multi-domain file systems: the use of public-key
-cryptography for user authentication is an effective way to support
-autonomous delegation, capability-based access control systems tend to
-lack support for auditing and accountability, ACL-based access control
-systems pose scalability challenges when used across administrative
-domains, and revocation and user autonomy are often at odds.
+the suitability of various distributed file systems for modern
+multi-user, multi-domain use cases by analyzing five underlying file
+system qualities: authentication, authorization, granularity,
+delegation, and revocation.  Miltchev, et. al. suggest that any secure
+large scale file system must successfully address the functionality of
+all five of these factors across multiple administrative domains in
+order to be an effective multi-user, multi-domain file system. In
+addition to the systems discussed in~\cite{Kher2005}, Miltchev,
+et. al. also discuss systems like Truffles, Bayou, WebFS, CapaFS,
+DisCFS, WebDAVA, and Fileteller as examples of systems that attempt to
+support multi-domain, multi-user, globally-accessible use
+cases. Miltchev, et. al. reach the following conclusions regrading
+successful secure multi-user, multi-domain file systems: the use of
+public-key cryptography for user authentication is an effective way to
+support autonomous delegation, capability-based access control systems
+tend to lack support for auditing and accountability, ACL-based access
+control systems pose scalability challenges when used across
+administrative domains, and revocation and user autonomy are often at
+odds.
 
 A good example of a modern multi-user distributed file system with
 many of the desirable qualities discussed previously is SFS, described
@@ -764,77 +765,77 @@ by Mazi\`{e}res, et. al. in their 1999 paper ``Separating Key
 Management form File System Security''~\cite{Mazieres1999}. In this
 paper, they describe the design and implementation of the SFS file
 system. SFS is unique in that it is designed for global-scale file
-system operations and leverages cryptographic security while avoiding
-the need for tightly specified key management infrastructure. Such
-infrastructure often adds a large administrative burden, limiting file
-system expansion beyond a single administrative domain on the basis of
-management complexity. SFS achieves it's goals through the use of
-self-certifying file names: file names that encode the public key of
-remote file servers into the file path itself. Self-certifying path
-names allow SFS clients to bootstrap a cryptographically secure
-communication channel to nay remove server without requiring any large
-scale key-management infrastructure. SFS leverages authentication
-servers to verify users on the basis of asymmetric key pairs and uses
-user agents to help reduce the usability burden this might otherwise
-impose (see Section~\ref{sec:mgmt} for more details on agents). SFS is
-built atop the NFS distributed file system, and thus uses an a
-Unix-based access control model to regulate file and directory
-access. SFS's cryptographic capabilities help it to overcome the need
-for a fully trusted compute base for the enforcement of its security
-model. Extensions to SFS like GSFS help move SFS beyond the
+system operations and leverages basic cryptographic security while
+avoiding the need for tightly specified key management
+infrastructure. Such infrastructure often adds a large administrative
+burden, limiting file system expansion beyond a single administrative
+domain on the basis of management complexity alone. SFS achieves its
+goals through the use of self-certifying file names: file names that
+encode the public key of remote a file server into the file path
+itself. Self-certifying path names allow SFS clients to bootstrap a
+cryptographically secure communication channel to any remote server
+without requiring any large scale key-management infrastructure. SFS
+leverages authentication servers to verify users on the basis of
+asymmetric key pairs and uses security agents to help reduce the
+usability burden this might otherwise impose (see
+Section~\ref{sec:mgmt} for more details on agents). SFS is built atop
+the NFS distributed file system, and thus uses an a Unix-based access
+control model to regulate file and directory access. SFS's
+cryptographic capabilities help it to overcome the need for a fully
+trusted compute base for the enforcement of its security
+model. Extensions to SFS like GSFS help further move SFS beyond the
 limitations of a single administrative domain to accommodate a more
 general global file system. SFS does not however provide full
 end-to-end encryption, so it still requires some trust of the
-underlying infrastructure and administration techniques.
+underlying infrastructure and administration.
 
 \subsection{State of the Art}
 
 As mentioned in Section~\ref{sec:ac}, the basic Unix and Windows NT
-final system security models are by far the most widely deployed file
-system security approaches. Where multi-system distributed file
-systems are concerned, NFS, AFS, and CIFS are the de facto
-standards. As discussed, all of these systems lack support for
-end-to-end cryptographic security, global access, and inter-domain
-sharing. They are the standard not because of their rich, modern
-feature sets (which they lack), but simply because they are adequate
-for many of the standard single user or single domain use cases and
-replacing them would be a larger burden than it is worth. Again, these
-are not ideal systems, they are simply ``good enough'' for many users,
-and thus remain the standard.
+file system security models are by far the most widely deployed file
+system security approaches. Where distributed file systems are
+concerned, NFS, AFS, and CIFS are the de facto standards. As
+discussed, all of these systems lack support for end-to-end
+cryptographic security, global access, and inter-domain sharing. They
+are the standard not because of their rich, modern feature sets (which
+they lack), but simply because they are adequate for many of the
+standard single user or single domain use cases still deployed
+today. Replacing these systems would often be a larger burden than it
+is worth. These are not ideal systems, but they are ``good enough''
+for many users, and thus remain the standard.
 
-In many instances, the tradition systems listed above are not so much
-threatened by the more advanced research systems previously discussed
-(e.g. SFS, Bayou, Plutus, etc) as they are threatened by the growing
+In many instances, the traditional systems listed above are not so
+much threatened by the more advanced research systems previously
+discussed (e.g. SFS, Bayou, Plutus, etc) but by the growing
 proliferation of cloud-based distributed storage service like Dropbox
-or Google Drive. Today, when users wish to share files across
-administrative boundaries (or even within these boundaries) or wish to
-sync files across multiple devises, they often do so using a dedicated
-file sharing/syncing service based in the cloud. These services tend
-to have highly polished user interfaces and overcome many of the
-single-domain, single-system restrictions of more traditional
-approaches like NFS or CIFS. While polished and easy to use, these
-systems do require placing full trust in the cloud providers that
-operate them. While most users seem willing to trade trust and privacy
-for the features these service provide, there is a growing
-understanding (a la Edward Snowden and our friends at the National
-Security Agency) of the privacy risk offloading data to the cloud
-involves. While these risks don't seem to deter a majority of users
-(at least this time), they do make such service strictly off limits
-within certain high security and regulatory realms. To date, no of the
-major cloud storage services offer access to end-to-end encryption
-schemes that would allow users to store they data in the cloud while
-also minimizing their need to trust a given cloud service
+or Google Drive. Today, when users wishes to share files across
+administrative boundaries (or even within these boundaries) or wishes
+to sync files across multiple devises, they often do so using a
+dedicated file sharing/syncing service based in the cloud. These
+services tend to have highly polished user interfaces and overcome
+many of the single-domain, single-system restrictions of more
+traditional approaches like NFS or CIFS. While polished and easy to
+use, these systems do require placing full trust in the cloud
+providers who operate them. While most users seem willing to trade
+trust and privacy for the features these service provide, there is a
+growing understanding (a la Edward Snowden and our friends at the
+National Security Agency) of the privacy risk offloading data to the
+cloud involves. While these risks don't seem to deter a majority of
+users (at least this time), they do make such service strictly off
+limits within certain high security and regulatory realms. To date,
+none of the major cloud storage services offer access to end-to-end
+encryption schemes that would allow users to store their data in the
+cloud while also minimizing their need to trust a given cloud service
 provider. The reasons behind the lack of a cryptographically secure
 cloud service seems to be a combination of lack of user demand,
-usability challenges such a system would entail, and the conflicts
-such a system would pose for many cloud providers data0-mining based
-business models.
+usability challenges, and the conflicts of interested between
+privacy-minded user and data-mining based cloud business models.
 
 While cryptographically secure distributed or cloud-based file systems
 are not in wide spread use, there are a growing number of
-cryptographic secure local file systems worth mentioning. On Linux,
-systems like eCryptfs provide an overlay file system capable of
-performing transparent encryption on a subset of the systems file
+cryptographically secure local file systems worth mentioning. On
+Linux, systems like eCryptfs provide an overlay file system capable of
+performing transparent encryption on a subset of the system's file
 tree. Alternatively, systems like dm-crypt provide block-level
 encryption suitable for full-disk encryption schemes. Using a local
 disk encryption system helps to guard against data loss or compromise
@@ -844,15 +845,16 @@ devices like laptops or tablets since these devices tend to be more
 prone to theft or loss. Systems like BitLocker on Windows or FileVault
 on OSX can be used to provide similar features. Even most modern
 SSD-based hard disks tend to offer on-board encryption features to
-help protect them in the event of a loss. All of these systems tend to
-be fairly user friendly and/or transparent. They often tie encryption
-keys to a user's login password, allowing a user to encrypt their
-system without requiring any more effort than they would exert during
-a normal password-based login process. This approach, however, does
-mean that such systems are not useful for protecting files that can be
-stolen while a user is actively logged into a system (e.g. via a
-malicious program). They only provide protection when a system is
-powered off, locked, or similarly put into a non-active state.
+help protect them in the event that they are lost. All of these
+systems tend to be fairly user friendly and/or transparent. They often
+tie encryption keys to a user's login password, allowing a user to
+encrypt their system without requiring any more effort than they would
+exert during a normal password-based login process. This approach,
+however, does mean that such systems are not useful for protecting
+files that can be stolen while a user is actively logged into a system
+(e.g. via a malicious program). They only provide protection when a
+system is powered off, locked, or similarly put into a non-active
+state.
 
 \subsection{Future Extensions}
 
@@ -866,11 +868,11 @@ challenges can be directly linked to the problems that arise managing
 private cryptographic keys across our modern multi-device, multi-user
 use cases. Usability is the major hurdle preventing cryptographically
 strong distributed storage systems form entering the
-mainstream. Proving systems that can offer cryptographic security
+mainstream. Providing systems that can offer cryptographic security
 while also achieving the kind of intuitive usability provided by
 service like Dropbox or Google Drive needs to be a major area of
 research if we wish for such systems to provide a benefit other than
-supporting tenure-track progress with the ivory tower.
+supporting tenure-track progress within the ivory tower.
 
 The rise of cloud-based services is only going to increase the demand
 for secure storage systems that can support multi-user, multi-device,
@@ -878,7 +880,7 @@ multi-domain user cases while also minimizing the need to trust cloud
 providers. Providing such a system will open up the growing range of
 cloud service to an even wider audience, and will help to keep users
 in control of their data even as we increasingly outsource our
-computer resources. Custos~\cite{custos-masters} was one attempt at
+computing resources. Custos~\cite{custos-masters} was one attempt at
 building a component of such a system. Other attempts and further
 research are required if we're serious about closing the cloud vs
 trust divide.
