@@ -81,7 +81,7 @@ lessons. Furthermore, the modern state of the art in computing
 security still lea vs much to be desired. In this paper, I explore the
 development of the current state of the art in computer security
 focusing on four core components: cryptography, access control, file
-system security, and security management. Computer security is an
+system security, and usability and management. Computer security is an
 inherently large topic, but these core topics provide a reasonable
 basis for the modern state of computer security. In particular, I seek
 to answer the question: ``How can we secure our systems and data in a
@@ -1122,13 +1122,50 @@ discussed in~\cite{custos-masters}).
 \section{Conclusion}
 \label{sec:conclusion}
 
-Global Accessibility and Control
+Computer security has been said to be like insurance: no one wants to
+deal with it until they need it, and by then its too late. Ensuring
+that we can build secure computing systems is going to be the
+cornerstone or computing's success in the future. If computers and the
+service we build atop them can not be trusted and remain secure, they
+will be abandoned as tools of serious work. In order to advance the
+state of the art in computer security, I propose focusing on the
+following problems. These topics cut across the previously discussed
+security sub topics and help to answer the originally posed question,
+``How can we secure out systems and data in a robust, comprehensive,
+and easy-to-use manner?''
 
-Multi-User/Multi-Device/Multi-Domain
+\begin{packed_desc}
+\item{Multi-User|Multi-Device|Multi-Domain}: \hfill \\ Most dominant
+  use cases today require support for all of the ``multi-*'' scenarios
+  listed above. Users expect the ability to share and collaborate with
+  other users, users expect system to work across a range of personal
+  computing devices, and users do not wish to be bundled by arbitrary
+  delineations like a specific administrative domain. Any successful
+  security design must accommodate all of these desires gracefully if
+  it is to succeed.
+\item{Control of Trust}: \hfill \\ The rise of the cloud has provided
+  numerous benefits and conveniences to most end users. Unfortunately,
+  it often does so at the expense of allowing users to decide whom to
+  trust or to remain in control of their data. Successful security
+  systems must grant users the leeway to pick and chose whom to trust
+  and how their data can be used.
+\item{Usability}: \hfill \\ Any security system that significantly (or
+  for that matter, even moderately) increases the effort a user must
+  expend to complete a task is doomed to fail. End-users, developers,
+  and administrators do not generally enjoy having to think about
+  security. Successful security systems must be easy to use and avoid
+  subjecting users to onerous burdens if they are to be adopted.
+\end{packed_desc}
 
-Trust Management
+These goals are lofty, but I believe they are attainable. Future
+research work focused around accomplishing one or more of them will
+provide the basis of the future of computing security, and by
+extension, the future of computing in general. Working toward the
+betterment of computer security is an important pursuit and one that I
+am interested in undertaking.
 
-Usability
+\vfill
+\break
 
 % Bibliography
 \bibliographystyle{acm}
@@ -1136,10 +1173,10 @@ Usability
 
 \end{document}
 
-%%  LocalWords:  BCE Diffe Hellman's Diffie Custos AFS CryptoCache et
-%%  LocalWords:  OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
-%%  LocalWords:  ECIES RBAC ACL DAC SELinux Sandhu Coyne Feinstein al
-%%  LocalWords:  Youman Sahaie PolicyKit NTFS Kher CIFS SMB CFS WebFS
-%%  LocalWords:  SiRiUS Cephus Miltchev CapaFS DisCFS WebDAVA Mazi dm
-%%  LocalWords:  Fileteller SFS's GSFS Snowden BitLocker FileVault
-%%  LocalWords:  SSD Vipin GSS SSO IdP LastPass
+%%  LocalWords: BCE Diffe Hellman's Diffie Custos AFS CryptoCache
+%%  LocalWords: OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
+%%  LocalWords: ECIES RBAC ACL DAC SELinux Sandhu Coyne Feinstein
+%%  LocalWords: Youman Sahaie PolicyKit NTFS Kher CIFS SMB CFS WebFS
+%%  LocalWords: SiRiUS Cephus Miltchev CapaFS DisCFS WebDAVA Mazi dm
+%%  LocalWords: Fileteller SFS's GSFS Snowden BitLocker FileVault
+%%  LocalWords: SSD Vipin GSS SSO IdP LastPass
