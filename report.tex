@@ -643,7 +643,7 @@ of expressiveness remains an open problem. Building expressive systems
 that are also easy to reason about, manage, and maintain is a relevant
 topic to future access control advances.
 
-\section{Storage Security}
+\section{File Systems}
 \label{sec:fs}
 
 Much of the work we perform on computers today is highly
@@ -885,138 +885,137 @@ building a component of such a system. Other attempts and further
 research are required if we're serious about closing the cloud vs
 trust divide.
 
-\section{Management and Usability}
+\section{Usability}
 \label{sec:mgmt}
 
 There's little use in having highly secure systems that are impossible
 to manage/use. Unfortunately, manageability and ease of use is a major
-challenge on many of security systems in use today. Multiple research
+challenge on many secure systems in use today. Multiple research
 efforts have shown that one of the most common causes of security
 failures is misconfiguration. Likewise, there have been multiple
-studies showing the unwillingness of users to adobe new security
+studies showing the unwillingness of users to adopt new security
 practices if such practices increase the usage burden of a system. In
-this section, I'll discuss how security systems can be made more
-manageable and usable.
+this section, I'll discuss how secure systems can be made more usable
+across developer, administrative, and end-user use cases.
 
 \subsection{History}
 
-Security usability has been a concern since the early days of thinking
-about computer security. Unfortunately, it hasn't always been a
-priority. There are really multiple subsets of usability with respect
-to security. In particular, there is the usability of a system from
-the frame of reference of various stake holders. In particular, there
-are three core stake holders who are effected by the usability of a
-security scheme: programmers, administrators, and end
-users. Programmers care about the developer usability of a security
-system: e.g. how easily can a scheme be integrated with other systems?
+The usability of security has been a concern since the early days of
+thinking about computer security. Unfortunately, it hasn't always been
+a priority. There are multiple facets of usability with respect to
+security. In particular, it is useful to analyze the usability of a
+system from the frames of reference of various stake holders.  There
+are three core stake holders who are affected by the usability of a
+security scheme: developers, administrators, and end-users.
+Developers care about the programmatic usability of a system: e.g. how
+easily can a security scheme be integrated with other systems?
 Administrators care about the management usability of a system:
-e.g. How easy is it to manage and administrator? Finally end users
-care about the consumers usability of a system: which is really to
-say, they'd generally prefer not to have to care about the system at
-all. In all these cases, usability if of the utmost
-importance. Security is generally a secondary usage goal: e.g. it's
-not the primary point of what a system is trying to
-accomplish. Instead, it's a means to a larger end. Thus, if security
-systems become too burdensome, they will simple go unused. Security
-that gets in the way of the user instead naturally accommodating the
-user is security that will go unused.
+e.g. How easily can a security scheme be installed, configured, and
+managed? Finally end-users care about the consumer usability of a
+system: which is really to say, they'd generally prefer not to have to
+care about a secure system at all. In all these cases, usability is of
+the utmost importance. Security is generally a secondary usage goal:
+it's not the primary feature a system is trying to implement. Instead,
+it's a means to an end. Thus, if security systems become too
+burdensome, they will simply be ignored or removed. Security that gets
+in the way of the user instead of naturally accommodating the user is
+security that will go unused.
 
 As mentioned in previous sections, early computer security
 implementations often involved hard coding security primitives
 directly into the program that used them. Unfortunately, this practice
-quickly leads to programmer usability errors, tightly coupling
+quickly leads to developer usability challenges, tightly coupling
 security policy with security mechanism and making it difficult to
 update one without changing the other. To deal with issues like this,
 Vipin Samar invented the Pluggable Authentication Modules (PAM) system
 and presented it in his 1996 paper~\cite{Samar1996}. The PAM system
 was designed to provide a flexible interface for user authentication
 on Unix (and later Linux) systems. It strips the \texttt{login}
-program of its internal authentication mechanism code, instead proving
-it with an interface into an extensible authentication plugin
-stack. Like the GSS-API system that cam before it, PAM is designed to
-provide a generic security mechanism (in this case, a generic
-authentication mechanism) so that individual programs do not have to
-hard code their authentication algorithms. In this manner, PAM systems
-ease programmer usability by freeing them from the burden of having to
-code an authentication stack directly into their applications. This
-also avoid the need to constantly upgrade programs simply to support
-new authentication mechanisms. PAM also expands the administrators
-ability to control how authentication mechanisms are used. It allows
-administrators to control exactly which authentication primitives get
-used by each program on a system, even allowing them to specific
-multiple authentication primitives where required (e.g. to provide
-multi factor authentication). The manner in which PAM does this is
-fairly straightforward, ideally promoting administrative usability and
-management in addition to developer usability.
+program of its internal authentication mechanism code, instead
+providing it with an interface into an extensible authentication
+plugin stack. Like the GSS-API system that compliments it, PAM is
+designed to provide a generic security mechanism (in this case, a
+generic authentication mechanism) so that individual programs do not
+have to hard-code their authentication algorithms. In this manner, PAM
+systems ease developer usability by freeing programmers from the
+burden of having to code an authentication stack directly into their
+applications. This also avoids the need to constantly upgrade
+applications simply to support new authentication
+mechanisms. Furthermore, PAM expands the administrator's ability to
+control how authentication mechanisms are used within each
+application. It allows administrators to control exactly which
+authentication primitives get used by each application on a system,
+even allowing them to specific multiple authentication primitives
+where required (e.g. to provide multi factor authentication). The
+manner in which PAM does this is fairly straightforward, ideally
+promoting administrative usability in addition to developer usability.
 
 Beyond the developer and administrative usability of authentication
 systems lies a whole suite of usability challenges when it comes to
 having users managing passwords and authentication credentials
-(e.g. keys) for a range of sites and services. Users are often asked
-to remember a wide range of passwords for avert of services. When
-using cryptographically based authentication schemes
-(e.g. public/private keys/certificates), users must also keep track of
-all the necessary private keys so that they can use them to
-authenticate when required. Thus, the rather mundane task of password
-or certificate based authentication leads to a large end user burden,
-encouraging the creation of simple, repetitive passwords or
-discouraging the use of cryptographic certificates. Cox, et. al
-present a potential solution to these kinds of problems in the 2002
-paper on ``Security in Plan 9''~\cite{Cox2002}. Cox, et. al. propose
-suing a security ``agent'' to manage the complexity of maintaining
-multiple authentication secrets (e.g. passwords or keys) on behalf of
-a user. They build such an agent for the Plan 9 operating system
-called Factotum. The idea of having a dedicated ``agent'' manage
-credentials on the users behalf predate Factotum (i.e. the use of an
-SSH Agent dates back to the mid-90s), but Factotum generalizes the
-concept to make it a general purpose credential manager. A security
-agent like Factotum locally stores and tracks all credentials for a
-given user. These credentials are encrypted, generally using the
-user's login password, ensuring that the agent has access to them when
-the user is logged in but that they remain secure when the user is
+(e.g. keys) for a range of services. Users are often asked to remember
+a wide range of passwords for a variety of services. When using
+cryptographically based authentication schemes (e.g. public/private
+keys/certificates), users must also keep track of all the necessary
+private keys so that they can use them when required. Thus, the rather
+mundane task of password or certificate based authentication leads to
+a large end-user burden, encouraging the creation of simple,
+repetitive passwords or discouraging the use of cryptographic
+certificates. Cox, et. al present a potential solution to these kinds
+of problems in the 2002 paper on ``Security in Plan
+9''~\cite{Cox2002}. Cox, et. al. propose using a security ``agent'' to
+manage the complexity of maintaining multiple authentication secrets
+(e.g. passwords or keys) on behalf of a user. They build such an agent
+for the Plan 9 operating system called Factotum. The idea of having a
+dedicated ``agent'' manage credentials on the user's behalf predates
+Factotum (i.e. the SSH agent), but Factotum generalizes the concept to
+make it an application-agnostic credential manager. A security agent
+like Factotum locally stores and tracks all credentials for a given
+user. These credentials are encrypted, generally using the user's
+login password, ensuring that the agent has access to them when the
+user is logged in, but that they remain secure when the user is
 offline. When the user attempts to authenticate to a service that
-reuses credentials, Factotum look them up and provides them on the
-users behalf. If Factotum lacks the necessary credentials, it prompts
-the user for them, and then remembers stores them for future use. In
-this manner, Factotum can make authentication to a range of disparate
-services a largely seamless task for the user, greatly easing end user
+requires credentials, Factotum looks them up and provides them on the
+user's behalf. If Factotum lacks the necessary credentials, it prompts
+the user for them, and then stores them for future use. In this
+manner, Factotum can make authentication to a range of disparate
+services a largely seamless task for the user, greatly easing end-user
 usability and encouraging the use of strong password or cryptographic
-authentication techniques sine Factotum will absorb any additional
-usability burden such schemes would normally impose.
+authentication techniques that would otherwise be too burdensome to
+leverage.
 
 Morgan, et. al. present an alternate approach to managing the
-authentication across a range of service in their 2--4 paper
-``Federated Security: The Shibboleth
-Approach''~\cite{Morgan2004}. Where as agent-based system like
-Factotum deal with the multitude of user credentials on the client
-side, Shibboleth attempts to deal with this problem form the server
-side. Shibboleth is a from of advanced Single-Sign-On (SSO) system
-that allows users to use a single set of credentials to authenticate
-to a range of Shibboleth-backed sites. In contrast to more
-traditionally SSO systems, Shibboleth offers support for federations:
-the ability to share identify information across administrative
-domains. In Shibboleth, each users is associated with a Identity
-provider (IdP) server. This server maintains identity and
+authentication across a range of service in their 2004 paper
+``Federated Security: The Shibboleth Approach''~\cite{Morgan2004}.
+Where as agent-based system like Factotum deal with the multitude of
+user credentials on the client side, Shibboleth attempts to deal with
+this problem from the server side. Shibboleth is a from of advanced
+Single-Sign-On (SSO) system that allows users to use a single set of
+credentials to authenticate to a range of Shibboleth-backed sites. In
+contrast to more traditionally SSO systems, Shibboleth offers support
+for federations: the ability to share identify information across
+administrative domains. In Shibboleth, each users is associated with
+an Identity provider (IdP) server. This server maintains identity and
 authentication information about a user. When a user wishes to
 authenticate to a third party website, that website looks up and
-contacts the users IdP server. The user's session is passed to the IdP
-server and the user complete the authentication process, after which
-they are passed back to the original website with a token
+contacts the user's IdP server. The user's session is passed to the
+IdP server where user completes the authentication process, after
+which they are passed back to the original website with a token
 (i.e. assertion) stating whether or not their authentication attempt
 was successful and what access attributes they should be granted. The
 original site then grants access based on the validity of this token
 and the associated attributes it provides. Shibboleth leverages the
 Security Assertion Markup Language (SAML) on the back-end as a
 standardize format for passing security assertions between an IdP and
-a third party site. Since Shibboleth only required that a user manage
-and provide a single set of authentication credentials regardless of
-the number of disparate sites or services they need to access, it can
-greatly reduce the user's security burden and encourage the use of
-more secure (bit harder to remember and maintain) credentials. It also
-eases developer usability by reliving services of the need to build
-their own authentication systems (similar to PAM) and administrative
-usability by providing a centralized point at which all user
-attributes and permissions can be managed.
+a third party site. Since Shibboleth only requires that a user
+maintain and provide a single set of authentication credentials
+regardless of the number of disparate sites or services they need to
+access, it can greatly reduce the user's security burden and encourage
+the use of more secure (albeit harder to remember) credentials. It
+also eases developer usability by relieving services of the need to
+build their own authentication systems (similar to PAM) and
+administrative usability by providing a centralized point at which all
+user attributes and permissions can be managed.
 
 \subsection{State of the Art}
 
@@ -1026,69 +1025,68 @@ de facto standard for managing authentication on Unix and Linux
 systems. Today, PAM supports a wide range of authentication
 primitives, from passwords, to multi-factor devices, to hardware-based
 SmartCards. PAM support authentication for a range of Unix and Linux
-subsystems including login, SSH, FTP, etc. Windows provides similar
-pluggable authentication interfaces allowing the support of a wide
-range of authentication primitives. All of these systems encourage the
-rapid development of authentication primitives without unnecessarily
-tying them to the associated program that will leverage them. They
-also expose a lot of administrative flexibility when it comes to
-configuring authentication across a range of devices.
+subsystems including \texttt{login}, SSH, FTP, etc. Windows provides
+similar pluggable authentication interfaces. All of these systems
+encourage the rapid development of authentication primitives without
+unnecessarily tying them to the associated program leveraging
+them. They also expose a lot of administrative flexibility when it
+comes to configuring authentication across a range of services.
 
 While the concept of an OS-managed general security agent such as
-Factotum hasn't really gone mainstream, specific system make use of
+Factotum hasn't really gone mainstream, specific systems make use of
 agents for credential management, namely SSH and GnuPG. Password
 mangers, however, have become increasingly mainstream. These system
 specialize in the storage of passwords and other secrets, and while
-the often lack the fully integrated nature of an authentication agent,
-they do tend to support rudimentary auto-completion of user secrets
-where required. Since the bulk of day-today user authentication today
-takes place on the web, most password managers are browser based. In
-many ways, the browser in the modern ``OS'' for many user
-activities. In that manner, browser-based password managers such as
-LastPass or 1Password fulfill many of the same goals as Factotum: the
-ease the end user's security burden and encourage better security
-practices in the process. Most security experts recommend the use of a
-password manager to all user today. The fact that many user use the
-same password across multiple sites and choose essentially weak
-passwords is a major barrier to internet security. Password managers
-help counter this weakness by focusing all of the user's memorization
-efforts in a dingle, strong master password while encourage the use of
-long, random passwords bet wen the password management software and
-the third part web site or service.
+they often lack the fully integrated nature of an authentication
+agent, they do tend to support rudimentary auto-completion of user
+secrets where required. Since the bulk of day-today user
+authentication today takes place on the web, most password managers
+are browser based. In many ways, the browser in the modern ``OS'' for
+many user activities. In that manner, browser-based password managers
+such as LastPass or 1Password fulfill many of the same goals as
+Factotum: they ease the end-user's security burden and encourage
+better security practices in the process. Most security experts
+recommend the use of a password manager for all users today. The fact
+that many users use the same password across multiple sites and choose
+essentially weak passwords is a major barrier to internet
+security. Password managers help counter this weakness by focusing all
+of the user's memorization efforts in a single, strong master password
+while encourage the use of long, random passwords between the password
+management software and the third part web site or service.
 
 The Shibboleth system is deployed and in use across a range of
 academic and Internet2 infrastructure. Similar federated identity
 protocols such as OpenID or Persona have become common across the
 wider internet. Large cloud providers like Google or Facebook often
-act as identify providers for users who already have account with
-them, allowing them to authenticate to other websites without creating
-additional accounts. Identity provision is quickly becoming a core
-role of large cloud service providers, and options like ``Login with
-Facebook'' or ``Login with Google'' are fairly ubiquitous across
-account-based web services. These systems benefit users by reducing
-the number of credentials they must remember. When coupled with
-password managers and/or multi-factor authentication systems, they
-provide the basis for a much stronger web authentication framework
-than forcing users to remember a different password for each web site
-they utilize would allow.
+act as identify providers for users who already have accounts with
+them, allowing these users to authenticate to other websites without
+creating additional accounts. Identity provision is quickly becoming a
+core role of large cloud service providers, and options like ``Login
+with Facebook'' or ``Login with Google'' are fairly ubiquitous across
+web services. These systems benefit users by reducing the number of
+credentials they must remember. When coupled with password managers
+and/or multi-factor authentication systems, they provide the basis for
+a much stronger web authentication framework than forcing users to
+remember a different password for each web site they utilize would
+allow.
 
 \subsection{Future Extensions}
 
 Usability across administrative, developer, and end user domains
 remains a challenge in the security realm. Building secure systems
-that are easy to sue, easy to manage, and easy to build is a
+that are easy to use, easy to manage, and easy to build is a
 prerequisite to having any security system gain wide spread
 adoption. Many otherwise suitable security approaches have been doomed
 by the fact that they posed serious usability issues for one or more
 of the aforementioned groups.
 
-One of the major remaining usability challenges today is the best
-manner is Whig to manage user sec rest and credentials across the
-range of devices user expect to be able to use. Traditional agent
-programs generally fail in multi-device user cases since these system
+One of the major remaining usability challenges is deciding on the
+best manner in which to manage user secrets and credentials across the
+multitude of devices today's user expect to use. Traditional agent
+programs generally fail in multi-device use cases since these system
 keep only a local cache of user secretes that is useless if the user
-is trying to authenticate form a system other than the one on which
-they originally entered their credentials. This calls for a form of
+is trying to authenticate from a system other than the one on which
+they originally provided their credentials. This calls for a form of
 agent program capable of syncing data across multiple devices, while
 also retaining the security of the data should one of the devices
 become compromised.
@@ -1096,29 +1094,29 @@ become compromised.
 Systems like browser-based password managers or federated identity
 services overcome the multi-device issue by providing a central, often
 cloud based, repository of user credentials or identity data. But this
-introduces an issue of trust. Do we really want to be trusting third
-part cloud providers or all of our credentials, or with our identity
-and it;s accompanying metadata? While convenient, such trust does seed
-user privacy and control, and potentially increases the risk of user
-data exposure should a third party fall to attack or be legally
-compelled to provide user data.
+introduces a new issue: trust. Do we really want to be trusting a
+single third party cloud provider with all of our credentials, or with
+our identity and it's accompanying metadata? While convenient, such
+trust does seed user privacy and control, and potentially increases
+the risk of user data exposure should a third party lack scruples,
+fall to an attack, or be legally compelled to provide user data.
 
 The best manner in which to provide the kind of convenience security
 agents, password managers, and identity providers offer while also
 supporting multi-device use cases and minimizing third part trust
-requirements remains an open question. One potential approach to such
-system would be to leverage one of the aforementioned
+requirements remains an open question. One potential approach to
+building such a system would be to leverage one of the aforementioned
 cryptographically secure storage technologies as the basis of
 multi-device secret manager. Doing this in a manner that does not
 increase user burden (by forcing them to operate their own storage
 infrastructure) will not be easy. Peer-to-peer systems like BitTorrent
-sync might provide avenues toward building such a system, but such a
+Sync might provide avenues toward building such a system, but such a
 system has yet to be seriously proposed or prototyped. Furthermore,
-most form of cryptographically secure storage systems require some
-form of private key management, which in and of itself can pose
-usability challenges. This creates a bit of a ``chicken and the egg''
-problem where technologies to provide security in the absence of third
-party trust require such systems to reduce the end user usage
+most cryptographically secure storage systems require some form of
+private key management, which in and of itself can pose usability
+challenges. This creates a bit of a ``chicken and the egg'' problem
+where technologies to provide security in the absence of third party
+trust require just such systems to reduce the end-user usage
 burden. The solution to this cyclical usability vs trust problem is a
 potential area of active research (possible avenues for with are
 discussed in~\cite{custos-masters}).
@@ -1127,15 +1125,15 @@ discussed in~\cite{custos-masters}).
 \label{sec:conclusion}
 
 Computer security has been said to be like insurance: no one wants to
-deal with it until they need it, and by then its too late. Ensuring
+deal with it until they need it, and by then it's too late. Ensuring
 that we can build secure computing systems is going to be the
 cornerstone or computing's success in the future. If computers and the
-service we build atop them can not be trusted and remain secure, they
+service we build atop them can not be trusted to remain secure, they
 will be abandoned as tools of serious work. In order to advance the
 state of the art in computer security, I propose focusing on the
 following problems. These topics cut across the previously discussed
-security sub topics and help to answer the originally posed question,
-``How can we secure out systems and data in a robust, comprehensive,
+security realms and help to elucidate the originally posed question,
+``How can we secure our systems and data in a robust, comprehensive,
 and easy-to-use manner?''
 
 \begin{packed_desc}
@@ -1143,14 +1141,14 @@ and easy-to-use manner?''
   use cases today require support for all of the ``multi-*'' scenarios
   listed above. Users expect the ability to share and collaborate with
   other users, users expect system to work across a range of personal
-  computing devices, and users do not wish to be bundled by arbitrary
+  computing devices, and users do not wish to be burdened by arbitrary
   delineations like a specific administrative domain. Any successful
   security design must accommodate all of these desires gracefully if
   it is to succeed.
 \item{Control of Trust}: \hfill \\ The rise of the cloud has provided
   numerous benefits and conveniences to most end users. Unfortunately,
   it often does so at the expense of allowing users to decide whom to
-  trust or to remain in control of their data. Successful security
+  trust and to place in control of their data. Successful security
   systems must grant users the leeway to pick and chose whom to trust
   and how their data can be used.
 \item{Usability}: \hfill \\ Any security system that significantly (or
@@ -1165,8 +1163,9 @@ These goals are lofty, but I believe they are attainable. Future
 research work focused around accomplishing one or more of them will
 provide the basis of the future of computing security, and by
 extension, the future of computing in general. Working toward the
-betterment of computer security is an important pursuit and one that I
-am interested in undertaking.
+betterment of computer security is an important pursuit and one that
+must be undertaken to ensure the long term viability of modern
+computing practices.
 
 \vfill
 \break
@@ -1177,7 +1176,7 @@ am interested in undertaking.
 
 \end{document}
 
-%%  LocalWords: BCE Diffe Hellman's Diffie Custos AFS CryptoCache
+%%  LocalWords: BCE Diffe Hellman's Diffie Custos AFS CryptoCache VFS
 %%  LocalWords: OceanStore SFS Plutus Adi Shamir ElGamal ECDH ECDSA
 %%  LocalWords: ECIES RBAC ACL DAC SELinux Sandhu Coyne Feinstein
 %%  LocalWords: Youman Sahaie PolicyKit NTFS Kher CIFS SMB CFS WebFS
