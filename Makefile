@@ -1,5 +1,5 @@
-PROPOSAL=proposal
-REPORT=report
+PROPOSAL=prelim-proposal
+REPORT=prelim-report
 
 LATEX=pdflatex
 BIBTEX=bibtex --min-crossrefs=1000
@@ -7,7 +7,7 @@ BIBTEX=bibtex --min-crossrefs=1000
 REF = $(wildcard *.bib)
 STY = $(wildcard *.sty) $(wildcard *.cls)
 
-all :$(PROPOSAL).pdf $(REPORT).pdf
+all: $(REPORT).pdf $(PROPOSAL).pdf
 
 $(PROPOSAL).pdf: $(PROPOSAL).tex $(REF) $(STY)
 	$(LATEX) $(PROPOSAL)
