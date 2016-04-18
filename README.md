@@ -32,9 +32,9 @@ $ make
 Final Copy
 ----------
 
-+ Proposal: [prelim-proposal-final.pdf](./prelim-proposal-final.pdf).
-+ Report: [prelim-report-final.pdf](./prelim-report-final.pdf).
-+ Slides: [prelim-slides-final.pdf](./prelim-slides-final.pdf).
++ Proposal: [prelim-proposal-final.pdf](./prelim-proposal-final.pdf)
++ Report: [prelim-report-final.pdf](./prelim-report-final.pdf)
++ Slides: [prelim-slides-final.pdf](./prelim-slides-final.pdf)
 
 See Also
 --------
