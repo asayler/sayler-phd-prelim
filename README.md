@@ -1,20 +1,15 @@
 System and Data Security - A CS Systems Prelim
 ====================================================
 
-PhD Prelim Proposal and Report
+PhD Prelim Proposal and Report  
 Conforming to the
 [CU CS Systems Prelim Requirements]
 (http://www.colorado.edu/cs/sites/default/files/attached-files/Systems%20Preliminary.pdf)  
 Andy Sayler  
 https://www.andysayler.com  
-April 2013  
+April 2014  
 University of Colorado, Boulder  
 Dept. of Computer Science  
-
-Pre-reqs
---------
-
-+ LaTeX
 
 Building
 --------
@@ -51,7 +46,7 @@ include:
 + PhD Proposal (April 2015): https://github.com/asayler/sayler-phd-proposal
 + PhD Dissertation (April 2016): https://github.com/asayler/sayler-phd-dissertation
 
-This work builds on my Master's Thesis work:
+This work builds on my Master's Thesis (December 2013):
 
 + https://github.com/asayler/sayler-masters-thesis
 
